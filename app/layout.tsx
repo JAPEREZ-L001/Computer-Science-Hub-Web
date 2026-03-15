@@ -10,7 +10,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: 'Computer Science Hub | CSH',
-  description: 'La disrupción provoca innovación. An evolving ecosystem transforming computer science students into professional engineers with national impact.',
+  description: 'La disrupción provoca innovación. Ecosistema evolutivo de Ciencias de la Computación: de comunidad educativa a mesa de ingeniería con identidad propia.',
   generator: 'v0.app',
   icons: {
     icon: [
