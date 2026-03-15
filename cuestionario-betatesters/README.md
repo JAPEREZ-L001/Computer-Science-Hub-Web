@@ -2,6 +2,8 @@
 
 Mini-app Next.js independiente para la encuesta de betatesters del CSH. Vive en este repo bajo `/cuestionario-betatesters/` pero se despliega en un **proyecto Vercel separado** del sitio principal.
 
+Las respuestas se almacenan en **Supabase** (proyecto `cuestionario-betatesters-csh`).
+
 ---
 
 ## Desarrollo local
@@ -9,65 +11,50 @@ Mini-app Next.js independiente para la encuesta de betatesters del CSH. Vive en 
 ```bash
 cd cuestionario-betatesters
 npm install
-cp .env.local.example .env.local   # configura las variables (ver abajo)
+cp .env.local.example .env.local   # ya configurado con la URL del proyecto
 npm run dev                         # corre en http://localhost:3001
 ```
 
 ---
 
-## Configuración de Google Sheets
+## Supabase
 
-### 1. Crear el proyecto en Google Cloud
+### Proyecto
 
-1. Ve a [console.cloud.google.com](https://console.cloud.google.com).
-2. Crea un proyecto nuevo (o usa uno existente).
-3. Activa la **Google Sheets API**:
-   - Menú > APIs & Services > Library > buscar "Google Sheets API" > Enable.
+| Campo | Valor |
+|---|---|
+| Nombre | `cuestionario-betatesters-csh` |
+| Project ID | `lijihfnrcjuooaoftyel` |
+| URL | `https://lijihfnrcjuooaoftyel.supabase.co` |
+| Región | `us-east-1` |
 
-### 2. Crear una Service Account
+### Tabla
 
-1. APIs & Services > Credentials > **Create Credentials** > Service account.
-2. Dale un nombre (ej. `cuestionario-csh`), sin roles especiales; haz clic en Done.
-3. Haz clic en la cuenta recién creada > pestaña **Keys** > Add Key > Create new key > **JSON** > Create.
-4. Descarga el archivo `.json` (guárdalo en lugar seguro, **nunca lo subas al repo**).
+`respuestas_betatesters` — creada vía migración. Columnas:
 
-Del archivo JSON necesitarás dos valores:
-- `client_email`  → será `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-- `private_key`   → será `GOOGLE_PRIVATE_KEY`
+- `id` (uuid, PK)
+- `created_at` (timestamptz)
+- Una columna `text` por cada campo del formulario (secciones 1–7)
 
-### 3. Crear la Google Sheet y compartirla
+### Seguridad (RLS)
 
-1. Ve a [sheets.google.com](https://sheets.google.com) y crea una nueva hoja.
-2. Copia el **ID** de la hoja desde la URL:  
-   `https://docs.google.com/spreadsheets/d/<SHEET_ID>/edit`
-3. Haz clic en **Share** y añade el `client_email` del Service Account con permisos de **Editor**.
-4. En la primera fila de `Hoja1` añade las cabeceras (copia esto tal cual):
+- **INSERT**: permitido para cualquiera (el formulario es público).
+- **SELECT / UPDATE / DELETE**: bloqueado para anon. Solo accesible con service_role desde el dashboard de Supabase.
 
-```
-Timestamp	Rol	Rol (otro)	Familiaridad	Dispositivo	¿Qué es el CSH?	Claridad homepage	Confusión (detalle)	Propuesta de valor	Inicio rápido	Inicio (detalle)	Sobre CSH (facilidad)	Valores (facilidad)	Programas (facilidad)	Ruta sugerida	Ruta (mejora)	Dev – Seriedad	Dev – No es para mí	Dev – Sección interés	Biz – Iniciativas claras	Biz – Info faltante	Biz – Frase justificación	NT – Abrumado	NT – Solo expertos	Ganas de participar	CTAs claros	CTA – Cambiar	Micro-intake	Micro-intake (mejora)	Sensación visual	Animaciones	Animaciones (detalle)	Cambio único	Lo que más gustó	Sorpresa positiva	Comentarios adicionales
-```
+### Ver respuestas
 
-### 4. Variables de entorno
-
-Crea el archivo `.env.local` en la raíz de esta carpeta (`cuestionario-betatesters/`):
-
-```env
-GOOGLE_SHEET_ID=tu_sheet_id_aqui
-GOOGLE_SERVICE_ACCOUNT_EMAIL=tu-cuenta@proyecto.iam.gserviceaccount.com
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMII...\n-----END PRIVATE KEY-----\n"
-```
-
-> **Nota sobre `GOOGLE_PRIVATE_KEY`**: copia el valor tal como viene en el JSON, incluyendo los `\n`. En Vercel, al pegar el valor en las env vars, sustituye los `\n` literales por saltos de línea reales, o bien mantenlos como `\n` (la API route ya los normaliza).
+Ir a [supabase.com/dashboard/project/lijihfnrcjuooaoftyel/editor](https://supabase.com/dashboard/project/lijihfnrcjuooaoftyel/editor) → Table Editor → `respuestas_betatesters`.
 
 ---
 
-## Variables de entorno requeridas
+## Variables de entorno
 
-| Variable | Descripción |
+| Variable | Valor |
 |---|---|
-| `GOOGLE_SHEET_ID` | ID de la Google Sheet (de la URL) |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Email del Service Account |
-| `GOOGLE_PRIVATE_KEY` | Clave privada del Service Account (con `\n`) |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://lijihfnrcjuooaoftyel.supabase.co` |
+| `SUPABASE_ANON_KEY` | anon key del proyecto (ver `.env.local.example`) |
+
+Para obtener la anon key: Supabase Dashboard → Project Settings → API → `anon` / `public`.
 
 ---
 
@@ -75,26 +62,16 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMII...\n-----END PRIVATE KEY---
 
 Este cuestionario **no** usa el mismo proyecto Vercel que el sitio Computer Science Hub.
 
-### Pasos para crear el segundo proyecto en Vercel
+### Pasos
 
 1. Ve a [vercel.com](https://vercel.com) → **Add New Project**.
-2. Importa el **mismo repositorio** `ComputerSciencieHub-Web`.
-3. En la pantalla de configuración, expande **"Root Directory"** y escribe:
-   ```
-   cuestionario-betatesters
-   ```
+2. Importa el **mismo repositorio** `Computer-Science-Hub-Web`.
+3. En **Root Directory** escribe: `cuestionario-betatesters`
 4. Framework preset: **Next.js** (se detecta automático).
-5. Antes de hacer Deploy, añade las **Environment Variables**:
-   - `GOOGLE_SHEET_ID`
-   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `GOOGLE_PRIVATE_KEY`
+5. En **Environment Variables** añade:
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://lijihfnrcjuooaoftyel.supabase.co`
+   - `SUPABASE_ANON_KEY` = (la anon key del proyecto)
 6. Haz clic en **Deploy**.
-
-El sitio CSH seguirá desplegándose desde su propio proyecto Vercel (sin Root Directory). Los dos proyectos son completamente independientes.
-
-### Dominio personalizado (opcional)
-
-En el proyecto del cuestionario: Settings → Domains → Add Domain → (ej. `encuesta.computersciencehub.io`).
 
 ---
 
@@ -105,7 +82,7 @@ cuestionario-betatesters/
 ├── app/
 │   ├── api/
 │   │   └── submit/
-│   │       └── route.ts       # POST → Google Sheets
+│   │       └── route.ts       # POST → Supabase
 │   ├── globals.css
 │   ├── layout.tsx
 │   └── page.tsx
@@ -125,5 +102,5 @@ cuestionario-betatesters/
 
 - **Next.js 15** (App Router)
 - **react-hook-form** + **zod** (validación)
-- **googleapis** (escritura en Google Sheets)
+- **@supabase/supabase-js** (almacenamiento)
 - **Tailwind CSS v4**
