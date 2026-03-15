@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSH | Terminal Mode</title>
+    <!-- Google Fonts: Space Mono and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="site-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span>></span> CSH_
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#init" class="active">01 // INIT</a></li>
+                    <li><a href="#mission">02 // MISSION</a></li>
+                    <li><a href="#logs">03 // LOGS</a></li>
+                    <li><a href="#join">04 // JOIN</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <p>STATUS: <span class="status-indicator">ONLINE</span></p>
+                <p>UDB.CSH.26</p>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <section id="init" class="panel hero-panel">
+                <div class="hero-content">
+                    <p class="cmd-line">~ $ ./start_hub.sh --env=production</p>
+                    <h1 class="glitch-title" data-text="Computer Science Hub">Computer Science Hub</h1>
+                    <p class="subtitle">La disrupción provoca innovación.</p>
+                    
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="terminal-body">
+                            <p>> Iniciando ecosistema evolutivo...</p>
+                            <p>> Cargando módulos: Educativo, Organizativo, Profesional</p>
+                            <p>> Autonomía: ESTABLE</p>
+                            <p><span class="cursor">_</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mission" class="panel mission-panel">
+                <div class="section-title">
+                    <h2><span class="hash">#</span> Nuestra_Estructura</h2>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="tech-card">
+                        <div class="card-header">
+                            <span class="icon">{ }</span>
+                            <h3>Acompañamiento Académico</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Tutoría entre pares estructurada por asignatura y nivel. Solidaridad activa como base del desarrollo.</p>
+                        </div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="card-header">
+                            <span class="icon">/></span>
+                            <h3>Proyección Profesional</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Desarrollo de competencias técnicas avanzadas. Preparación exhaustiva para las exigencias de la industria del software.</p>
+                        </div>
+                    </div>
+                    <div class="tech-card">
+                        <div class="card-header">
+                            <span class="icon">&_</span>
+                            <h3>Mesa de Ingeniería</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Gobernanza definida y representación formal ante autoridades y el sector nacional. Un hub vivo y en crecimiento.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="logs" class="panel logs-panel">
+                <div class="section-title">
+                    <h2><span class="hash">#</span> System_Logs</h2>
+                </div>
+                
+                <ul class="log-list">
+                    <li class="log-item">
+                        <div class="log-time">[2026-05-12 14:30:00]</div>
+                        <div class="log-type type-info">INFO</div>
+                        <div class="log-msg">Nueva versión del programa de mentorías "CSH-Peers v2.0" desplegada con éxito.</div>
+                    </li>
+                    <li class="log-item">
+                        <div class="log-time">[2026-04-08 09:15:22]</div>
+                        <div class="log-type type-event">EVENT</div>
+                        <div class="log-msg">Registro cerrado para el Hackathon de Soluciones Disruptivas. 150 participantes confirmados.</div>
+                    </li>
+                    <li class="log-item">
+                        <div class="log-time">[2026-03-22 18:45:10]</div>
+                        <div class="log-type type-update">UPDATE</div>
+                        <div class="log-msg">Alianza académica establecida con hubs internacionales de ingeniería.</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="join" class="panel join-panel">
+                <div class="join-container">
+                    <h2>> Ready_to_commit?</h2>
+                    <p>Si compartes nuestra visión de disrupción y excelencia técnica, únete a la comunidad.</p>
+                    <form class="terminal-form">
+                        <div class="input-group">
+                            <label>Usuario (Carnet):</label>
+                            <input type="text" placeholder="AB123456" />
+                        </div>
+                        <div class="input-group">
+                            <label>Rol_Deseado:</label>
+                            <select>
+                                <option>Desarrollo</option>
+                                <option>Diseño / UI</option>
+                                <option>Comunidad / Logística</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-execute">> EXECUTE_JOIN</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

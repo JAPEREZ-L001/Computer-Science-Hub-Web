@@ -41,9 +41,10 @@ export function HeroSection() {
         </h1>
 
         <p className="mx-auto mb-12 max-w-2xl text-lg text-white/70 sm:text-xl">
-          Ecosistema evolutivo donde los estudiantes de Ciencias de la Computación
-          fortalecen formación académica, organización comunitaria y proyección
-          profesional, de comunidad educativa a mesa de ingeniería con identidad propia.
+          Comunidad estudiantil de Ciencias de la Computación que convierte el aula en
+          un laboratorio vivo de aprendizaje, organización y proyección profesional:
+          acompañamiento académico entre pares, comunidad organizada y puente hacia la
+          industria tecnológica.
         </p>
 
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -56,10 +57,10 @@ export function HeroSection() {
           </Link>
 
           <Link
-            href="#ecosystem"
+            href="/sobre"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:border-white hover:bg-white/10"
           >
-            Conocer el ecosistema
+            Conocer el CSH
           </Link>
         </div>
       </div>
