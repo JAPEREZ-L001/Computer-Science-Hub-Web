@@ -5,21 +5,21 @@ import { Zap, Cog, Compass } from "lucide-react"
 const philosophies = [
   {
     icon: Zap,
-    title: "Disruptive",
+    title: "Disruptiva",
     description:
-      "We challenge conventional thinking and embrace bold ideas that redefine what's possible in technology and education.",
+      "Cuestionamos prácticas que ya no responden al contexto; proponemos alternativas creativas, viables y responsables. La disrupción provoca innovación.",
   },
   {
     icon: Cog,
-    title: "Operative",
+    title: "Operativa",
     description:
-      "We execute with precision, transforming concepts into reality through disciplined engineering practices and collaboration.",
+      "Planificación, seguimiento, documentación y evaluación constante. Las buenas ideas se convierten en resultados tangibles.",
   },
   {
     icon: Compass,
-    title: "Autonomous",
+    title: "Autónoma",
     description:
-      "We cultivate self-directed learners who take ownership of their growth and contribute independently to the collective mission.",
+      "Autogestión responsable en el marco institucional: liderazgo, decisiones informadas y corresponsabilidad por la sostenibilidad del Hub.",
   },
 ]
 
@@ -29,10 +29,10 @@ export function PhilosophySection() {
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mb-20 text-center">
           <span className="mb-4 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white/50">
-            Our Philosophy
+            Nuestra filosofía
           </span>
           <h2 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
-            Built on three pillars
+            Tres culturas que nos definen
           </h2>
         </div>
 
