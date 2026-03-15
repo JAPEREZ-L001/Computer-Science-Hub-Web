@@ -59,7 +59,7 @@ npm run deploy:prod
 
 1. **Instalar CLI:** El proyecto incluye `vercel` como devDependency; usar `npx vercel` o instalar global: `npm i -g vercel`.
 2. **Login (una vez):** `vercel login` (en CI: token en [Vercel Tokens](https://vercel.com/account/tokens) y `vercel --token <TOKEN>`).
-3. **Linkear proyecto (una vez):** Desde la raíz, `vercel link`. Elegir equipo y proyecto existente o crear uno.
+3. **Linkear proyecto (una vez):** Desde la raíz, `vercel link`. Elegir equipo y proyecto existente o crear uno. Si el nombre del directorio tiene mayúsculas, usar `vercel link --yes --project <nombre-en-minúsculas>` (ej. `computersciencehub-web`).
 4. **Variables de entorno:** Configurar en el dashboard del proyecto (Settings → Environment Variables). Para builds locales: `vercel pull --environment=production`.
 
 ---
