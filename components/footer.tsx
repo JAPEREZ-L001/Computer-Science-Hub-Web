@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
           <div className="flex items-center gap-3">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6%20simbolo%20en%20negro-YTWYDfjRHUXTOCKEsDaCL7ceaFrXxv.png"
+              src="/logo/logo-delta-light.svg"
               alt="CSH Logo"
               width={40}
               height={40}
@@ -18,7 +18,7 @@ export function Footer() {
             <div>
               <p className="font-bold tracking-[0.1em] text-sm uppercase">Computer Science Hub</p>
               <p className="text-sm text-muted-foreground">
-                La disrupción provoca innovación
+                La disrupción provoca innovación · Ingeniería que impulsa futuro
               </p>
             </div>
           </div>

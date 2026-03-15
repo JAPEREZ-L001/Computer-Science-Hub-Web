@@ -1,37 +1,49 @@
 "use client"
 
-import { Heart, Eye, HandshakeIcon, Award, Cpu } from "lucide-react"
+import { Heart, Eye, HandshakeIcon, Award, Cpu, Users, Target } from "lucide-react"
 
 const values = [
   {
     icon: Heart,
-    title: "Solidarity",
+    title: "Solidaridad activa",
     description:
-      "We stand together, supporting each other through challenges and celebrating collective achievements.",
+      "Nos apoyamos entre pares en lo académico, personal y profesional; el avance de uno aporta al avance de toda la comunidad.",
+  },
+  {
+    icon: Users,
+    title: "Respeto y empatía",
+    description:
+      "Valoramos la diversidad de contextos, ritmos e historias de vida; ambiente seguro y humano para todas las personas.",
   },
   {
     icon: Eye,
-    title: "Transparency",
+    title: "Transparencia",
     description:
-      "Open communication and honest collaboration form the foundation of our community.",
+      "Comunicamos con claridad decisiones, procesos y criterios; generamos confianza entre estudiantes, representantes y autoridades.",
   },
   {
     icon: HandshakeIcon,
-    title: "Co-responsibility",
+    title: "Corresponsabilidad",
     description:
-      "Every member shares ownership of our mission, contributing to the ecosystem's growth and success.",
+      "La mejora del campus es tarea compartida; cada rol contribuye desde sus competencias.",
   },
   {
     icon: Award,
-    title: "Ethical Excellence",
+    title: "Excelencia ética y académica",
     description:
-      "We pursue greatness with integrity, ensuring our innovations benefit society responsibly.",
+      "Altos estándares de calidad en formación y conducta; rigor técnico con integridad, justicia y servicio.",
   },
   {
     icon: Cpu,
-    title: "Technical Rigor",
+    title: "Rigor técnico e innovación",
     description:
-      "Precision, discipline, and continuous learning drive our engineering standards.",
+      "Dominio de fundamentos y herramientas de la computación; capacidad de crear soluciones nuevas y relevantes.",
+  },
+  {
+    icon: Target,
+    title: "Liderazgo con sentido social",
+    description:
+      "Liderazgos que usan la ingeniería para mejorar la vida de las personas y atender problemáticas reales.",
   },
 ]
 
@@ -41,10 +53,10 @@ export function ValuesSection() {
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mb-20 text-center">
           <span className="mb-4 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white/50">
-            What We Stand For
+            Lo que nos define
           </span>
           <h2 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
-            Our Core Values
+            Nuestros valores
           </h2>
         </div>
 
@@ -53,7 +65,7 @@ export function ValuesSection() {
             <div
               key={value.title}
               className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/10 ${
-                index === 4 ? "sm:col-span-2 lg:col-span-1" : ""
+                index === 6 ? "sm:col-span-2 lg:col-span-1" : ""
               }`}
             >
               <div className="relative">
