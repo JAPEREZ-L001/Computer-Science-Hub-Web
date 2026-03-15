@@ -1,3 +1,17 @@
+---
+title: "Análisis: identidad institucional y logos"
+status: "active"
+owner: "@csh"
+authors:
+  - "@csh"
+tracking:
+  - "docs/work/14-03-26FeatureBeforeSprint1/plan-feature.md"
+  - "CHANGELOG.md"
+baseline_commit: ""
+created: "2026-03-14"
+last_reviewed: "2026-03-14"
+---
+
 # Análisis: identidad institucional y logos
 
 **Feature:** Acoplar contenido (Identidad + Idea Principal) y logos vectorizados al sitio sin romper la UI ni saturar la página.  

@@ -1,77 +1,112 @@
 "use client"
 
 import { Users, Flag, Network, Building2 } from "lucide-react"
+import { useInView } from "@/hooks/use-in-view"
 
 const stages = [
   {
     icon: Users,
-    title: "Comunidad educativa",
-    description: "Acompañamiento académico entre pares, integración estudiantil y base sólida de colaboración y desarrollo constante.",
     number: "01",
+    title: "Comunidad educativa",
+    description:
+      "Espacios donde estudiantes ayudan a otros a comprender materias, preparar exámenes y conectar teoría con práctica.",
   },
   {
     icon: Flag,
-    title: "Comunidad administrativa",
-    description: "Mediación y representación ante las autoridades; canalización de inquietudes y propuestas de fortalecimiento académico e institucional.",
     number: "02",
+    title: "Comunidad administrativa",
+    description:
+      "Equipos y comités donde asumís roles, tomás decisiones y aprendés a trabajar en organización real.",
   },
   {
     icon: Network,
-    title: "Comunidad profesional",
-    description: "Preparación de integrantes como profesionales competentes, estructurados y habilitados para el campo laboral.",
     number: "03",
+    title: "Comunidad profesional",
+    description:
+      "Proyectos y conexiones que te acercan a la industria y te ayudan a construir un perfil empleable sólido.",
   },
   {
     icon: Building2,
-    title: "Mesa de ingeniería",
-    description: "Identidad institucional propia, gobernanza definida, sostenibilidad y proyección nacional en ingeniería y tecnología.",
     number: "04",
+    title: "Mesa de ingeniería",
+    description:
+      "Redes nacionales e internacionales, programas sostenibles y capacidad de proyectar talento más allá de la universidad.",
   },
 ]
 
+function EcosystemRow({ stage, index, parentVisible }: {
+  stage: typeof stages[number]
+  index: number
+  parentVisible: boolean
+}) {
+  const isEven = index % 2 === 0
+
+  return (
+    <div
+      className={`group relative grid items-start gap-8 border-b border-white/[0.06] py-10 last:border-b-0 md:grid-cols-[80px_1fr_1fr] ${
+        isEven ? "reveal-left" : "reveal-right"
+      } stagger-${index + 1} ${parentVisible ? "visible" : ""}`}
+    >
+      <div className="relative z-10 flex items-center justify-center">
+        <div className={`circle-ping relative flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-[#0D0D0D] transition-all duration-700 group-hover:border-white/30 group-hover:scale-110 stagger-${index + 1} ${parentVisible ? "visible" : ""}`}>
+          <stage.icon className="h-7 w-7 text-white/40 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
+        </div>
+      </div>
+
+      <div className="flex flex-col justify-center">
+        <span className="mb-2 text-[10px] font-bold uppercase tracking-[0.4em] text-white/25">
+          Etapa {stage.number}
+        </span>
+        <h3 className="text-2xl font-bold text-white transition-transform duration-300 group-hover:translate-x-2 md:text-3xl">
+          {stage.title}
+        </h3>
+      </div>
+
+      <div className="flex items-center">
+        <p className="max-w-sm text-sm leading-relaxed text-white/50 transition-colors duration-300 group-hover:text-white/70">
+          {stage.description}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export function EcosystemSection() {
+  const { ref: headingRef, isInView: headingVisible } = useInView({ threshold: 0.3 })
+  const { ref: listRef, isInView: listVisible } = useInView({ threshold: 0.05 })
+
   return (
     <section id="ecosystem" className="relative overflow-hidden py-32 bg-[#0D0D0D]">
+      <div className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
       <div className="relative mx-auto max-w-7xl px-6">
-        <div className="mb-20 text-center">
-          <span className="mb-4 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white/50">
+        <div
+          ref={headingRef}
+          className={`mb-24 text-center reveal-scale ${headingVisible ? "visible" : ""}`}
+        >
+          <span className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
             El camino
           </span>
-          <h2 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
+          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
             Evolución del ecosistema
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/60">
-            De comunidad educativa a mesa formal de ingeniería con identidad propia y proyección nacional.
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/50">
+            De comunidad educativa a mesa formal de ingeniería con identidad
+            propia y proyección nacional.
           </p>
         </div>
 
-        <div className="relative">
-          {/* Connection line */}
-          <div className="absolute left-0 top-1/2 hidden h-px w-full -translate-y-1/2 bg-white/20 lg:block" />
+        <div ref={listRef} className="relative">
+          <div className="absolute left-[39px] top-0 hidden h-full w-px bg-white/10 md:block" />
 
-          {/* Vertical line for mobile */}
-          <div className="absolute left-8 top-0 h-full w-px bg-white/20 lg:hidden" />
-
-          <div className="grid gap-8 lg:grid-cols-4">
-            {stages.map((stage) => (
-              <div key={stage.title} className="relative flex lg:flex-col">
-                {/* Mobile layout */}
-                <div className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center lg:mx-auto lg:mb-6">
-                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-[#0D0D0D]">
-                    <stage.icon className="h-7 w-7 text-white" />
-                  </div>
-                </div>
-
-                <div className="ml-6 lg:ml-0 lg:text-center">
-                  <span className="mb-2 block text-xs font-bold text-white/50 tracking-[0.2em]">
-                    {stage.number}
-                  </span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{stage.title}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed">
-                    {stage.description}
-                  </p>
-                </div>
-              </div>
+          <div className="space-y-0">
+            {stages.map((stage, index) => (
+              <EcosystemRow
+                key={stage.title}
+                stage={stage}
+                index={index}
+                parentVisible={listVisible}
+              />
             ))}
           </div>
         </div>

@@ -1,3 +1,18 @@
+---
+title: "Plan de feature: identidad institucional y logos"
+status: "active"
+owner: "@csh"
+authors:
+  - "@csh"
+tracking:
+  - "docs/work/14-03-26FeatureBeforeSprint1/analisis.md"
+  - "docs/tutorials/ciclo-vida-desarrollo.md"
+  - "CHANGELOG.md"
+baseline_commit: ""
+created: "2026-03-14"
+last_reviewed: "2026-03-14"
+---
+
 # Plan de feature: identidad institucional y logos
 
 **Feature:** Identidad institucional y logos (antes / integración con Sprint 1).  

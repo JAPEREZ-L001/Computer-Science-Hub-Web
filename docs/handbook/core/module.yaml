@@ -1,0 +1,13 @@
+# Módulo core — estructura base del proyecto
+# Permite que generate_architecture.py genere docs/handbook/architecture.md
+
+id: core
+name: Core
+description: Estructura base, configuración y documentación del proyecto.
+
+functions: []
+depends_on: []
+tracking:
+  - "app/"
+  - "components/"
+  - "lib/"
