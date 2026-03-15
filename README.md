@@ -46,7 +46,7 @@ pnpm install
 
 ## Documentación
 
-Los planes de trabajo y prototipos del proyecto se documentan en [docs/Planes](docs/Planes).
+Los planes de trabajo y prototipos del proyecto se documentan en [docs/Planes](docs/Planes). Proceso de trabajo (Scrum, Linear) y versionado: [docs/handbook/process](docs/handbook/process).
 
 ## Repositorio
 
