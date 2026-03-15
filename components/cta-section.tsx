@@ -2,59 +2,59 @@
 
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { useInView } from "@/hooks/use-in-view"
 
 export function CTASection() {
+  const { ref, isInView } = useInView({ threshold: 0.2 })
+
   return (
-    <section id="join" className="relative overflow-hidden py-32 bg-[#0D0D0D]">
-      {/* Grid pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+    <section className="glow-line relative overflow-hidden py-32 bg-[#0D0D0D]">
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] via-transparent to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5">
-          <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
-          <span className="text-xs font-medium text-white/70 tracking-wider">
-            Now accepting members
-          </span>
+      <div ref={ref} className="relative mx-auto max-w-5xl px-6">
+        <div className="flex flex-col items-center text-center">
+          <div className={`mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-5 py-2 reveal-scale ${isInView ? "visible" : ""}`}>
+            <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+            <span className="text-xs font-medium tracking-wider text-white/50">
+              Abierto a estudiantes de Computación
+            </span>
+          </div>
+
+          <h2 className={`mb-6 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl reveal-up stagger-1 ${isInView ? "visible" : ""}`}>
+            ¿Te sumás a
+            <br />
+            construir el Hub?
+          </h2>
+
+          <p className={`mx-auto mb-12 max-w-xl text-base leading-relaxed text-white/45 reveal-up stagger-2 ${isInView ? "visible" : ""}`}>
+            Unite a una comunidad que convierte la teoría en práctica, organiza
+            la voz estudiantil y abre caminos hacia el mundo profesional en
+            ingeniería.
+          </p>
+
+          <div className={`flex flex-col items-center gap-4 sm:flex-row reveal-up stagger-3 ${isInView ? "visible" : ""}`}>
+            <Link
+              href="#join"
+              className="group inline-flex items-center gap-3 rounded-full bg-white px-10 py-4 text-sm font-bold tracking-wide text-[#0D0D0D] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+            >
+              Sumate al Hub
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/sobre"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-10 py-4 text-sm font-medium text-white/70 transition-all duration-300 hover:border-white/40 hover:text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+            >
+              Conocer más
+            </Link>
+          </div>
+
+          <p className={`mt-10 text-xs tracking-wide text-white/25 reveal-up stagger-4 ${isInView ? "visible" : ""}`}>
+            Sin compromiso · Abierto a todos los estudiantes de CS
+          </p>
         </div>
-
-        <h2 className="mb-6 text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
-          Ready to build the future?
-        </h2>
-
-        <p className="mx-auto mb-10 max-w-2xl text-lg text-white/60">
-          Join a community of ambitious engineers who are transforming computer
-          science education and driving innovation with real-world impact.
-        </p>
-
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="#"
-            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 py-4 text-base font-semibold text-[#0D0D0D] transition-all duration-300 hover:scale-105"
-          >
-            <span>Join the Hub</span>
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Link>
-
-          <Link
-            href="#"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:border-white hover:bg-white/10"
-          >
-            Learn More
-          </Link>
-        </div>
-
-        <p className="mt-8 text-sm text-white/40">
-          No commitment required | Open to all CS students
-        </p>
       </div>
     </section>
   )
