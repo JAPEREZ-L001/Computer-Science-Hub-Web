@@ -4,6 +4,10 @@ Todos los cambios notables del proyecto se documentan en este archivo. El format
 
 ## [Unreleased]
 
+### Added
+
+- FE: Identidad institucional y logos. Contenido de Identidad-Institucional-CSH e Idea Principal CSH integrado en hero, filosofía, ecosistema y valores (7 valores). Logos vectorizados en `public/logo/` (Delta y Completo, variantes claro/oscuro); Header, Footer y Hero usan logos locales. Favicon desde LogoDelta. Microcopy en español; lemas «La disrupción provoca innovación» e «Ingeniería que impulsa futuro» en footer.
+
 ## [0.1.0] - 2026-03-14
 
 ### Added

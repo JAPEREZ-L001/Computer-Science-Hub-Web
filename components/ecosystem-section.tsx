@@ -5,26 +5,26 @@ import { Users, Flag, Network, Building2 } from "lucide-react"
 const stages = [
   {
     icon: Users,
-    title: "Community",
-    description: "Peer-learning foundation where students connect, share knowledge, and grow together.",
+    title: "Comunidad educativa",
+    description: "Acompañamiento académico entre pares, integración estudiantil y base sólida de colaboración y desarrollo constante.",
     number: "01",
   },
   {
     icon: Flag,
-    title: "Representation",
-    description: "Students become ambassadors, representing CSH in academic and professional spaces.",
+    title: "Comunidad administrativa",
+    description: "Mediación y representación ante las autoridades; canalización de inquietudes y propuestas de fortalecimiento académico e institucional.",
     number: "02",
   },
   {
     icon: Network,
-    title: "Professional Network",
-    description: "Building lasting connections with industry leaders and fellow engineers.",
+    title: "Comunidad profesional",
+    description: "Preparación de integrantes como profesionales competentes, estructurados y habilitados para el campo laboral.",
     number: "03",
   },
   {
     icon: Building2,
-    title: "Engineering Table",
-    description: "A professional collective driving innovation with national impact.",
+    title: "Mesa de ingeniería",
+    description: "Identidad institucional propia, gobernanza definida, sostenibilidad y proyección nacional en ingeniería y tecnología.",
     number: "04",
   },
 ]
@@ -35,13 +35,13 @@ export function EcosystemSection() {
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mb-20 text-center">
           <span className="mb-4 inline-block text-sm font-medium uppercase tracking-[0.2em] text-white/50">
-            The Journey
+            El camino
           </span>
           <h2 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white">
-            Ecosystem Evolution
+            Evolución del ecosistema
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/60">
-            From your first day as a student to becoming a force of innovation in the industry.
+            De comunidad educativa a mesa formal de ingeniería con identidad propia y proyección nacional.
           </p>
         </div>
 

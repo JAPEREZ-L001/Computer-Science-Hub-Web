@@ -2,7 +2,6 @@
 
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 export function CTASection() {
   return (
@@ -20,16 +19,6 @@ export function CTASection() {
       </div>
 
       <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <div className="mb-8 flex justify-center">
-          <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6%20simbolo%20en%20negro-YTWYDfjRHUXTOCKEsDaCL7ceaFrXxv.png"
-            alt="CSH Symbol"
-            width={60}
-            height={60}
-            className="h-15 w-15 object-contain opacity-50"
-          />
-        </div>
-
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5">
           <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
           <span className="text-xs font-medium text-white/70 tracking-wider">
