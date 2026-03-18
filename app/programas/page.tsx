@@ -106,9 +106,9 @@ function CategoriaSection({ cat, catIndex }: { cat: typeof categorias[number]; c
 
 export default function ProgramasPage() {
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#0D0D0D] text-white">
       <Header />
-
+      <div className="overflow-x-hidden">
       <section className="relative pt-40 pb-24">
         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6">
@@ -137,23 +137,33 @@ export default function ProgramasPage() {
       ))}
 
       <section className="border-t border-white/[0.06] py-16">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 sm:flex-row sm:items-center">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 sm:flex-row sm:items-center">
           <p className="text-sm text-white/40">
-            ¿Querés saber más sobre la comunidad detrás de estos programas?
+            ¿Querés conectar con la industria o seguir aprendiendo?
           </p>
-          <Link
-            href="/sobre"
-            className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
-          >
-            Sobre CSH
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-          </Link>
+          <div className="flex gap-4">
+            <Link
+              href="/oportunidades"
+              className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+            >
+              Ver oportunidades
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/recursos"
+              className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+            >
+              Explorar recursos
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </section>
 
       <MicroIntakeForm variant="programas" />
 
       <Footer />
+      </div>
     </main>
   )
 }

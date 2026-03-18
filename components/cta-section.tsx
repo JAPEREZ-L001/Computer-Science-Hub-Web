@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { scrollToJoin } from "@/lib/utils"
 import { useInView } from "@/hooks/use-in-view"
 
 export function CTASection() {
@@ -37,22 +38,23 @@ export function CTASection() {
           <div className={`flex flex-col items-center gap-4 sm:flex-row reveal-up stagger-3 ${isInView ? "visible" : ""}`}>
             <Link
               href="#join"
-              className="group inline-flex items-center gap-3 rounded-full bg-white px-10 py-4 text-sm font-bold tracking-wide text-[#0D0D0D] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+              onClick={scrollToJoin}
+              className="btn-press group inline-flex items-center gap-3 rounded-full bg-white px-10 py-4 text-sm font-bold tracking-wide text-[#0D0D0D] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
             >
-              Sumate al Hub
+              Comenzar mi ruta
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
-              href="/sobre"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-10 py-4 text-sm font-medium text-white/70 transition-all duration-300 hover:border-white/40 hover:text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+              href="/programas"
+              className="btn-press inline-flex items-center gap-2 rounded-full border border-white/20 px-10 py-4 text-sm font-medium text-white/70 transition-all duration-300 hover:border-white/40 hover:text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
-              Conocer más
+              Explorar programas
             </Link>
           </div>
 
           <p className={`mt-10 text-xs tracking-wide text-white/25 reveal-up stagger-4 ${isInView ? "visible" : ""}`}>
-            Sin compromiso · Abierto a todos los estudiantes de CS
+            Sin compromiso · Abierto a todos los estudiantes de CSH
           </p>
         </div>
       </div>

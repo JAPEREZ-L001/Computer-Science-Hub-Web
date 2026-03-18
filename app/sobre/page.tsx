@@ -36,8 +36,8 @@ function SobreHero() {
           <span className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40 text-mask-reveal">
             Sobre CSH
           </span>
-          <h1 className="mb-8 text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-            <span className="text-mask-reveal inline-block">Comunidad de ingeniería</span>
+          <h1 className="mb-8 text-5xl font-bold tracking-tight leading-[1.15] sm:text-6xl md:text-7xl">
+            <span className="text-mask-reveal inline-block overflow-visible pb-0.5">Comunidad de ingeniería</span>
             <br />
             <span className="text-mask-reveal-delay inline-block text-white/40">
               que impulsa futuro
@@ -173,31 +173,32 @@ function HaciaDonde() {
 
 export default function SobrePage() {
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#0D0D0D] text-white">
       <Header />
+      <div className="overflow-x-hidden responsive-safe">
       <SobreHero />
       <QuienesSomos />
       <ComoTrabajamos />
       <HaciaDonde />
 
       <section className="border-t border-white/[0.06] py-16">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 sm:flex-row sm:items-center">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 sm:flex-row sm:items-center">
           <p className="text-sm text-white/40">
-            ¿Querés ser parte? Explorá los valores y programas del Hub.
+            ¿Querés ser parte? Descubrí los programas y oportunidades del Hub.
           </p>
           <div className="flex gap-4">
-            <Link
-              href="/valores"
-              className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
-            >
-              Valores
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-            </Link>
             <Link
               href="/programas"
               className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
             >
-              Programas
+              Explorar programas
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/oportunidades"
+              className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+            >
+              Ver oportunidades
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -205,6 +206,7 @@ export default function SobrePage() {
       </section>
 
       <Footer />
+      </div>
     </main>
   )
 }
