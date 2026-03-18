@@ -43,7 +43,7 @@ function EcosystemRow({ stage, index, parentVisible }: {
 
   return (
     <div
-      className={`group relative grid items-start gap-8 border-b border-white/[0.06] py-10 last:border-b-0 md:grid-cols-[80px_1fr_1fr] ${
+      className={`group relative grid items-start gap-6 sm:gap-8 border-b border-white/[0.06] py-8 sm:py-10 last:border-b-0 md:grid-cols-[80px_1fr_1fr] ${
         isEven ? "reveal-left" : "reveal-right"
       } stagger-${index + 1} ${parentVisible ? "visible" : ""}`}
     >
@@ -79,7 +79,7 @@ export function EcosystemSection() {
     <section id="ecosystem" className="relative overflow-hidden py-32 bg-[#0D0D0D]">
       <div className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div
           ref={headingRef}
           className={`mb-24 text-center reveal-scale ${headingVisible ? "visible" : ""}`}

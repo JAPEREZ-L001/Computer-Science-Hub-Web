@@ -1,0 +1,1 @@
+Despues de haber realizado la primera betatest solamente con 12 personas un circulo bastante cerrado se llego a la conclusion de que podemos validar la idea analiza el respuestas_betatesters_rows(1).csv y genera issues a partir de eso y tambien analiza los issues que te he dejado en issues propuestos
