@@ -11,8 +11,9 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <main className="min-h-screen bg-background text-foreground">
       <Header />
+      <div className="overflow-x-hidden">
       <HeroSection />
       <PhilosophySection />
       <SitePath />
@@ -22,6 +23,7 @@ export default function Home() {
       <CTASection />
       <MicroIntakeForm variant="home" />
       <Footer />
+      </div>
     </main>
   )
 }

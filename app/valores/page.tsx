@@ -78,9 +78,9 @@ function ValorRow({ valor, index }: { valor: typeof valores[number]; index: numb
 
 export default function ValoresPage() {
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#0D0D0D] text-white">
       <Header />
-
+      <div className="overflow-x-hidden">
       <section className="relative pt-40 pb-24">
         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6">
@@ -115,7 +115,7 @@ export default function ValoresPage() {
       </section>
 
       <section className="border-t border-white/[0.06] py-16">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 sm:flex-row sm:items-center">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 sm:flex-row sm:items-center">
           <p className="text-sm text-white/40">
             ¿Querés ver cómo se traducen estos valores en acción?
           </p>
@@ -123,13 +123,14 @@ export default function ValoresPage() {
             href="/programas"
             className="group inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
           >
-            Ver programas
+            Explorar programas disponibles
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </section>
 
       <Footer />
+      </div>
     </main>
   )
 }
