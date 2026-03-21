@@ -39,49 +39,76 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
 
   const ensureAnonymousSession = useCallback(async () => {
     const supabase = createClient()
-    const { data: { user: u } } = await supabase.auth.getUser()
 
-    if (u) {
-      const { data: { session: s } } = await supabase.auth.getSession()
-      setSession(s)
-      setUser(u)
-    } else {
-      try {
-        const { data, error } = await supabase.auth.signInAnonymously()
-        if (!error) {
-          setSession(data.session)
-          setUser(data.user)
-        }
-      } catch {
-        setSession(null)
-        setUser(null)
+    try {
+      const { data: userData, error: userError } = await supabase.auth.getUser()
+      if (userError) throw userError
+
+      const u = userData.user
+      if (u) {
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+        if (sessionError) throw sessionError
+
+        setSession(sessionData.session)
+        setUser(u)
+        return
       }
+
+      const { data, error } = await supabase.auth.signInAnonymously()
+      if (error) throw error
+
+      setSession(data.session)
+      setUser(data.user)
+    } catch (err) {
+      // Si el token en cookies está corrupto o expirado de forma inesperada,
+      // la app no debe romper el render; simplemente se vuelve a un estado limpio.
+      console.error("[auth] ensureAnonymousSession", err)
+      setSession(null)
+      setUser(null)
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }, [])
 
   useEffect(() => {
     const supabase = createClient()
 
-    void supabase.auth.getUser().then(({ data: { user: u } }) => {
-      if (u) {
-        void supabase.auth.getSession().then(({ data: { session: s } }) => {
-          setSession(s)
+    void (async () => {
+      try {
+        const { data: userData, error: userError } = await supabase.auth.getUser()
+        if (userError) throw userError
+
+        const u = userData.user
+        if (u) {
+          const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+          if (sessionError) throw sessionError
+
+          setSession(sessionData.session)
           setUser(u)
           setIsLoading(false)
-        })
-        return
-      }
+          return
+        }
 
-      if (isAuthRoute) {
-        setSession(null)
-        setUser(null)
-        setIsLoading(false)
-        return
-      }
+        if (isAuthRoute) {
+          setSession(null)
+          setUser(null)
+          setIsLoading(false)
+          return
+        }
 
-      void ensureAnonymousSession()
-    })
+        await ensureAnonymousSession()
+      } catch (err) {
+        if (isAuthRoute) {
+          setSession(null)
+          setUser(null)
+          setIsLoading(false)
+          return
+        }
+
+        // ensureAnonymousSession tiene su propio try/catch/finally
+        await ensureAnonymousSession()
+      }
+    })()
 
     const {
       data: { subscription },
