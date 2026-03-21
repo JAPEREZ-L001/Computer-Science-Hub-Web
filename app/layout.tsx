@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AuthSessionProvider } from '@/components/providers/auth-session-provider'
+import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ["latin"],
   variable: '--font-montserrat',
-});
+})
 
 export const metadata: Metadata = {
   title: 'Computer Science Hub | CSH',
@@ -39,8 +41,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        {children}
-        <Analytics />
+        <AuthSessionProvider>
+          {children}
+          <Toaster />
+          <Analytics />
+        </AuthSessionProvider>
       </body>
     </html>
   )
