@@ -1,0 +1,202 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Pencil } from 'lucide-react'
+
+import { updateProfile } from '@/app/actions/profile'
+import type { MemberProfile } from '@/src/types'
+import { useToast } from '@/components/ui/use-toast'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+
+const CAREER_OPTIONS = [
+  'Ing. en Ciencias de la Computación',
+  'Licenciatura en Ingeniería de Software',
+  'Ing. en Sistemas Informáticos',
+  'Licenciatura en Diseño de Experiencias Digitales',
+] as const
+
+type FormState = {
+  full_name: string
+  career: string
+  cycle: string
+  area: string
+  bio: string
+  github_url: string
+  linkedin_url: string
+}
+
+function toFormState(member: MemberProfile): FormState {
+  return {
+    full_name: member.name === 'Miembro' ? '' : member.name,
+    career: member.career === '—' ? '' : member.career,
+    cycle: member.cycle > 0 ? String(member.cycle) : '',
+    area: member.area,
+    bio: member.bio ?? '',
+    github_url: member.github ?? '',
+    linkedin_url: member.linkedin ?? '',
+  }
+}
+
+export function EditProfileDialog({ member }: { member: MemberProfile }) {
+  const router = useRouter()
+  const { toast } = useToast()
+  const [open, setOpen] = useState(false)
+  const [pending, setPending] = useState(false)
+  const [form, setForm] = useState<FormState>(() => toFormState(member))
+
+  const set = (key: keyof FormState) => (value: string) =>
+    setForm((f) => ({ ...f, [key]: value }))
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPending(true)
+    const res = await updateProfile(form)
+    setPending(false)
+
+    if (!res.ok) {
+      toast({ variant: 'destructive', title: 'Error', description: res.message })
+      return
+    }
+
+    toast({ title: 'Perfil actualizado' })
+    setOpen(false)
+    router.refresh()
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2">
+          <Pencil className="h-3.5 w-3.5" />
+          Editar perfil
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+        <form onSubmit={handleSubmit}>
+          <DialogHeader>
+            <DialogTitle>Editar perfil</DialogTitle>
+          </DialogHeader>
+
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="ep-name">Nombre completo</Label>
+              <Input
+                id="ep-name"
+                value={form.full_name}
+                onChange={(e) => set('full_name')(e.target.value)}
+                placeholder="Ej. Ana María López"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="ep-career">Carrera</Label>
+              <Select value={form.career} onValueChange={set('career')}>
+                <SelectTrigger id="ep-career">
+                  <SelectValue placeholder="Seleccioná tu carrera" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CAREER_OPTIONS.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="ep-cycle">Ciclo (1–10)</Label>
+              <Input
+                id="ep-cycle"
+                type="number"
+                min={1}
+                max={10}
+                value={form.cycle}
+                onChange={(e) => set('cycle')(e.target.value)}
+                placeholder="Ej. 4"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Área</Label>
+              <Select value={form.area} onValueChange={set('area')}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="frontend">Frontend</SelectItem>
+                  <SelectItem value="backend">Backend</SelectItem>
+                  <SelectItem value="diseño">Diseño</SelectItem>
+                  <SelectItem value="devops">DevOps</SelectItem>
+                  <SelectItem value="ia">IA</SelectItem>
+                  <SelectItem value="seguridad">Seguridad</SelectItem>
+                  <SelectItem value="general">General</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="ep-bio">Bio</Label>
+              <Textarea
+                id="ep-bio"
+                value={form.bio}
+                onChange={(e) => set('bio')(e.target.value)}
+                rows={3}
+                placeholder="Contá brevemente sobre vos..."
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="ep-github">GitHub URL</Label>
+              <Input
+                id="ep-github"
+                value={form.github_url}
+                onChange={(e) => set('github_url')(e.target.value)}
+                placeholder="https://github.com/tu-usuario"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="ep-linkedin">LinkedIn URL</Label>
+              <Input
+                id="ep-linkedin"
+                value={form.linkedin_url}
+                onChange={(e) => set('linkedin_url')(e.target.value)}
+                placeholder="https://linkedin.com/in/tu-usuario"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={pending}>
+              {pending ? 'Guardando...' : 'Guardar cambios'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}

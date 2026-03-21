@@ -43,27 +43,27 @@ function EcosystemRow({ stage, index, parentVisible }: {
 
   return (
     <div
-      className={`group relative grid items-start gap-6 sm:gap-8 border-b border-white/[0.06] py-8 sm:py-10 last:border-b-0 md:grid-cols-[80px_1fr_1fr] ${
+      className={`group relative grid items-start gap-8 border-b border-white/[0.08] py-12 last:border-b-0 md:grid-cols-[100px_1fr_1fr] ${
         isEven ? "reveal-left" : "reveal-right"
       } stagger-${index + 1} ${parentVisible ? "visible" : ""}`}
     >
       <div className="relative z-10 flex items-center justify-center">
-        <div className={`circle-ping relative flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-[#0D0D0D] transition-all duration-700 group-hover:border-white/30 group-hover:scale-110 stagger-${index + 1} ${parentVisible ? "visible" : ""}`}>
-          <stage.icon className="h-7 w-7 text-white/40 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
+        <div className={`circle-ping relative flex h-20 w-20 items-center justify-center rounded-3xl border border-white/[0.08] bg-[#050505] shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:border-white/30 group-hover:-translate-y-2 group-hover:shadow-[0_15px_30px_rgba(255,255,255,0.05)] stagger-${index + 1} ${parentVisible ? "visible" : ""}`}>
+          <stage.icon className="h-8 w-8 text-white/40 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
         </div>
       </div>
 
-      <div className="flex flex-col justify-center">
-        <span className="mb-2 text-[10px] font-bold uppercase tracking-[0.4em] text-white/25">
+      <div className="flex flex-col justify-center h-full">
+        <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
           Etapa {stage.number}
         </span>
-        <h3 className="text-2xl font-bold text-white transition-transform duration-300 group-hover:translate-x-2 md:text-3xl">
+        <h3 className="text-2xl font-bold text-white transition-transform duration-500 group-hover:translate-x-2 md:text-3xl">
           {stage.title}
         </h3>
       </div>
 
-      <div className="flex items-center">
-        <p className="max-w-sm text-sm leading-relaxed text-white/50 transition-colors duration-300 group-hover:text-white/70">
+      <div className="flex flex-col justify-center h-full">
+        <p className="max-w-md text-sm font-medium leading-relaxed text-white/50 transition-colors duration-500 group-hover:text-white/80">
           {stage.description}
         </p>
       </div>
@@ -76,7 +76,7 @@ export function EcosystemSection() {
   const { ref: listRef, isInView: listVisible } = useInView({ threshold: 0.05 })
 
   return (
-    <section id="ecosystem" className="relative overflow-hidden py-32 bg-[#0D0D0D]">
+    <section id="ecosystem" className="relative overflow-hidden py-32 bg-[#050505]">
       <div className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -84,20 +84,21 @@ export function EcosystemSection() {
           ref={headingRef}
           className={`mb-24 text-center reveal-scale ${headingVisible ? "visible" : ""}`}
         >
-          <span className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
+          <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
             El camino
           </span>
           <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
             Evolución del ecosistema
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/50">
+          <p className="mx-auto mt-6 max-w-xl text-base font-medium leading-relaxed text-white/50">
             De comunidad educativa a mesa formal de ingeniería con identidad
             propia y proyección nacional.
           </p>
         </div>
 
         <div ref={listRef} className="relative">
-          <div className="absolute left-[39px] top-0 hidden h-full w-px bg-white/10 md:block" />
+          {/* Timeline line */}
+          <div className="absolute left-[49px] top-0 hidden h-full w-px bg-white/[0.06] md:block" />
 
           <div className="space-y-0">
             {stages.map((stage, index) => (

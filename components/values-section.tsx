@@ -58,25 +58,25 @@ export function ValuesSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div
           ref={headingRef}
-          className={`mb-20 flex flex-col gap-6 md:flex-row md:items-end md:justify-between reveal-up ${headingVisible ? "visible" : ""}`}
+          className={`mb-24 flex flex-col gap-6 md:flex-row md:items-end md:justify-between reveal-up ${headingVisible ? "visible" : ""}`}
         >
           <div className="max-w-2xl">
-            <span className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
+            <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
               Lo que nos define
             </span>
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
               Valores en acción
             </h2>
-            <p className="mt-3 text-sm text-white/40">
-              Un vistazo rápido — explorá cada valor en detalle en la página completa.
+            <p className="mt-4 text-base font-medium text-white/50 max-w-lg">
+              Los pilares inquebrantables de nuestra cultura y ecosistema — explora cada valor en su máximo detalle en la página completa.
             </p>
           </div>
           <Link
-            href="/valores"
-            className="group inline-flex items-center gap-2 text-sm text-white/40 transition-colors hover:text-white"
+            href="/nosotros"
+            className="group mt-4 md:mt-0 inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/[0.03] px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 transition-all hover:border-white/40 hover:bg-white/[0.06] hover:text-white shrink-0"
           >
-            Ver todos en detalle
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            Conocer nuestra cultura
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
 
@@ -84,18 +84,20 @@ export function ValuesSection() {
         <div className="hidden sm:block">
           <div
             ref={topGridRef}
-            className="grid gap-px overflow-hidden rounded-lg border border-white/[0.06] sm:grid-cols-2 lg:grid-cols-4"
+            className="grid gap-px overflow-hidden rounded-t-3xl border-x border-t border-white/[0.08] sm:grid-cols-2 lg:grid-cols-4"
           >
             {values.slice(0, 4).map((value, index) => (
               <div
                 key={value.title}
-                className={`hover-tilt group relative bg-white/[0.02] p-8 transition-colors duration-300 hover:bg-white/[0.05] reveal-scale stagger-${index + 1} ${topGridVisible ? "visible" : ""}`}
+                className={`group relative bg-[#050505] p-10 transition-colors duration-500 hover:bg-white/[0.04] hover:shadow-[inset_0_0_80px_rgba(255,255,255,0.02)] reveal-scale stagger-${index + 1} ${topGridVisible ? "visible" : ""}`}
               >
-                <value.icon className="mb-6 h-5 w-5 text-white/25 transition-all duration-500 group-hover:text-white/60 group-hover:scale-125" />
-                <h3 className="mb-3 text-base font-bold text-white">
+                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.02] transition-colors duration-500 group-hover:border-white/[0.15] group-hover:bg-white/[0.06]">
+                  <value.icon className="h-6 w-6 text-white/30 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">
                   {value.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-white/40">
+                <p className="text-sm font-medium leading-relaxed text-white/50 transition-colors duration-300 group-hover:text-white/70">
                   {value.short}
                 </p>
               </div>
@@ -104,18 +106,20 @@ export function ValuesSection() {
 
           <div
             ref={bottomGridRef}
-            className="mt-px grid gap-px overflow-hidden rounded-lg border border-white/[0.06] sm:grid-cols-3"
+            className="mt-px grid gap-px overflow-hidden rounded-b-3xl border-x border-b border-white/[0.08] sm:grid-cols-3"
           >
             {values.slice(4).map((value, index) => (
               <div
                 key={value.title}
-                className={`hover-tilt group relative bg-white/[0.02] p-8 transition-colors duration-300 hover:bg-white/[0.05] reveal-scale stagger-${index + 3} ${bottomGridVisible ? "visible" : ""}`}
+                className={`group relative bg-[#050505] p-10 transition-colors duration-500 hover:bg-white/[0.04] hover:shadow-[inset_0_0_80px_rgba(255,255,255,0.02)] reveal-scale stagger-${index + 3} ${bottomGridVisible ? "visible" : ""}`}
               >
-                <value.icon className="mb-6 h-5 w-5 text-white/25 transition-all duration-500 group-hover:text-white/60 group-hover:scale-125" />
-                <h3 className="mb-3 text-base font-bold text-white">
+                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.02] transition-colors duration-500 group-hover:border-white/[0.15] group-hover:bg-white/[0.06]">
+                  <value.icon className="h-6 w-6 text-white/30 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-white transition-colors duration-300 group-hover:text-white/90">
                   {value.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-white/40">
+                <p className="text-sm font-medium leading-relaxed text-white/50 transition-colors duration-300 group-hover:text-white/70">
                   {value.short}
                 </p>
               </div>
@@ -123,22 +127,24 @@ export function ValuesSection() {
           </div>
         </div>
 
-        {/* Mobile: accordion (REQ-06) */}
+        {/* Mobile: accordion */}
         <div className="sm:hidden">
-          <Accordion type="single" collapsible className="space-y-2">
+          <Accordion type="single" collapsible className="space-y-4">
             {values.map((value) => (
               <AccordionItem
                 key={value.title}
                 value={value.title}
-                className="rounded-lg border border-white/[0.08] bg-white/[0.02] px-4 overflow-hidden"
+                className="rounded-3xl border border-white/[0.08] bg-[#050505] px-6 overflow-hidden"
               >
-                <AccordionTrigger className="py-3 hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <value.icon className="h-4 w-4 text-white/30 shrink-0" />
-                    <span className="text-sm font-bold text-white">{value.title}</span>
+                <AccordionTrigger className="py-5 hover:no-underline">
+                  <div className="flex items-center gap-4">
+                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
+                      <value.icon className="h-4 w-4 text-white/50" />
+                    </div>
+                    <span className="text-base font-bold text-white text-left">{value.title}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-xs leading-relaxed text-white/45 pb-3">
+                <AccordionContent className="text-sm font-medium leading-relaxed text-white/50 pb-5 pt-2">
                   {value.short}
                 </AccordionContent>
               </AccordionItem>
