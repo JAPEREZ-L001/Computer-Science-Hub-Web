@@ -17,6 +17,15 @@ const badgeVariants = cva(
           'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
           'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+        /** Navegación / módulos con acciones para miembros */
+        interactive:
+          'border-violet-500/35 bg-violet-500/15 text-violet-100 [a&]:hover:bg-violet-500/25',
+        /** Indica que hace falta cuenta real para acciones */
+        account:
+          'border-amber-500/35 bg-amber-500/10 text-amber-100/95 [a&]:hover:bg-amber-500/20',
+        /** Usuario autenticado con acceso completo al módulo */
+        unlocked:
+          'border-emerald-500/35 bg-emerald-500/10 text-emerald-100/95 [a&]:hover:bg-emerald-500/15',
       },
     },
     defaultVariants: {
