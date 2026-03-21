@@ -12,7 +12,6 @@ import { AuthCard } from '@/components/auth-card'
 import { InputField } from '@/components/input-field'
 import { PasswordInput } from '@/components/password-input'
 import { Spinner } from '@/components/ui/spinner'
-import { Toaster } from '@/components/ui/toaster'
 import { toast } from '@/hooks/use-toast'
 import { useAuthSession } from '@/components/providers/auth-session-provider'
 import { createClient } from '@/src/lib/supabase/client'
@@ -147,10 +146,17 @@ function RegisterForm() {
     })
 
     if (error) {
+      const isRateLimit =
+        error.status === 429 ||
+        error.message?.toLowerCase().includes('security purposes') ||
+        error.message?.toLowerCase().includes('rate limit')
+
       toast({
         variant: 'destructive',
-        title: 'No se pudo registrar',
-        description: error.message,
+        title: isRateLimit ? 'Demasiados intentos' : 'No se pudo registrar',
+        description: isRateLimit
+          ? 'Por seguridad, Supabase limita los registros por minuto. Espera un momento e inténtalo de nuevo.'
+          : error.message,
       })
       return
     }
@@ -311,7 +317,6 @@ export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden relative">
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
-      <Toaster />
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-24">
         <Suspense
           fallback={

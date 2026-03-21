@@ -9,7 +9,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 import { toast } from '@/hooks/use-toast'
-import { Toaster } from '@/components/ui/toaster'
 import { Spinner } from '@/components/ui/spinner'
 
 import { AuthCard } from '@/components/auth-card'
@@ -190,7 +189,6 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden relative">
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
-      <Toaster />
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-24">
         <Suspense
           fallback={
