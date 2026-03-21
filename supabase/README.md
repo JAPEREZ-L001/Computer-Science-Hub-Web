@@ -14,6 +14,20 @@ Migraciones SQL versionadas en `migrations/`. Proyecto remoto: **Computer-Scienc
 - **Incluye:** noticias (mock), eventos (mock), oportunidades (página `/oportunidades`), recursos (página `/recursos`), sponsors (mock).
 - **Profiles:** se crean al registrarse vía Auth + trigger `handle_new_user` (migración `csh_s2_21_handle_new_user.sql`).
 
+## Auth: Site URL y redirect URLs (hosted)
+
+La configuración de Auth del proyecto remoto vive en `config.toml` (sección `[auth]`). Tras `supabase link`, actualizar ahí `site_url` y `additional_redirect_urls` y aplicar con:
+
+```bash
+npx supabase config push --yes
+```
+
+**Importante:** `config push` compara **toda** la sección `[auth]` con el remoto (email, MFA, sign-in anónimo, etc.). No uses un `config.toml` “de plantilla” sin alinearlo con lo que ya tienes en el dashboard, o podrías sobrescribir ajustes sin querer.
+
+Producción actual: `site_url` = `https://computersciencehub-web.vercel.app`; redirects permitidos incluyen `http://localhost:3000/auth/callback` y `https://computersciencehub-web.vercel.app/auth/callback`.
+
+En Vercel, define también `NEXT_PUBLIC_SITE_URL` con la misma URL de producción (CLI: `vercel env add NEXT_PUBLIC_SITE_URL production`).
+
 ## Variables locales
 
 Copiar `.env.example` → `.env.local` y pegar la clave publicable del dashboard de Supabase.

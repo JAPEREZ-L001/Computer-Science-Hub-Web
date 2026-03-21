@@ -17,3 +17,6 @@ node_modules/
 .next/
 .DS_Store
 .vercel
+
+# Supabase CLI (credenciales de enlace locales)
+supabase/.temp/
