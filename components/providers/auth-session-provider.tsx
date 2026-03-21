@@ -37,7 +37,7 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
     pathname === "/registro" ||
     pathname.startsWith("/auth/")
 
-  const ensureAnonymousSession = useCallback(async () => {
+  const resolveSession = useCallback(async () => {
     const supabase = createClient()
 
     try {
@@ -51,18 +51,12 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
 
         setSession(sessionData.session)
         setUser(u)
-        return
+      } else {
+        setSession(null)
+        setUser(null)
       }
-
-      const { data, error } = await supabase.auth.signInAnonymously()
-      if (error) throw error
-
-      setSession(data.session)
-      setUser(data.user)
     } catch (err) {
-      // Si el token en cookies está corrupto o expirado de forma inesperada,
-      // la app no debe romper el render; simplemente se vuelve a un estado limpio.
-      console.error("[auth] ensureAnonymousSession", err)
+      console.error("[auth] resolveSession", err)
       setSession(null)
       setUser(null)
     } finally {
@@ -89,24 +83,13 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
           return
         }
 
-        if (isAuthRoute) {
-          setSession(null)
-          setUser(null)
-          setIsLoading(false)
-          return
-        }
-
-        await ensureAnonymousSession()
-      } catch (err) {
-        if (isAuthRoute) {
-          setSession(null)
-          setUser(null)
-          setIsLoading(false)
-          return
-        }
-
-        // ensureAnonymousSession tiene su propio try/catch/finally
-        await ensureAnonymousSession()
+        setSession(null)
+        setUser(null)
+        setIsLoading(false)
+      } catch {
+        setSession(null)
+        setUser(null)
+        setIsLoading(false)
       }
     })()
 
@@ -119,7 +102,7 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
     })
 
     return () => subscription.unsubscribe()
-  }, [isAuthRoute, ensureAnonymousSession])
+  }, [isAuthRoute, resolveSession])
 
   useEffect(() => {
     if (!user || user.is_anonymous) {

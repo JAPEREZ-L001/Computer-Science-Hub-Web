@@ -13,7 +13,6 @@ import { InputField } from '@/components/input-field'
 import { PasswordInput } from '@/components/password-input'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from '@/hooks/use-toast'
-import { useAuthSession } from '@/components/providers/auth-session-provider'
 import { createClient } from '@/src/lib/supabase/client'
 import { getPublicSiteUrl } from '@/src/lib/site-url'
 
@@ -58,7 +57,6 @@ function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = safeRedirectPath(searchParams.get('redirect'))
-  const { user: currentUser } = useAuthSession()
   const {
     register,
     handleSubmit,
@@ -80,56 +78,6 @@ function RegisterForm() {
   const onSubmit = async (values: RegisterValues) => {
     const supabase = createClient()
     const origin = getPublicSiteUrl()
-
-    if (currentUser?.is_anonymous) {
-      const { data, error } = await supabase.auth.updateUser({
-        email: values.email.trim(),
-        password: values.password,
-        data: {
-          full_name: values.fullName.trim(),
-          career: values.career,
-          cycle: values.cycle,
-          area: 'general',
-        },
-      })
-
-      if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'No se pudo completar el registro',
-          description: error.message,
-        })
-        return
-      }
-
-      if (data.user) {
-        const { error: upsertErr } = await supabase.from('profiles').upsert(
-          {
-            id: data.user.id,
-            full_name: values.fullName.trim(),
-            email: values.email.trim(),
-            career: values.career,
-            cycle: values.cycle,
-            area: 'general',
-            status: 'activo',
-          },
-          { onConflict: 'id' },
-        )
-
-        if (upsertErr) {
-          console.error('registro:upsert', upsertErr)
-          toast({
-            variant: 'destructive',
-            title: 'Cuenta creada, pero el perfil no se actualizó',
-            description: 'Podés completar tu perfil desde la sección de perfil.',
-          })
-        }
-      }
-
-      router.refresh()
-      router.push(redirectTo)
-      return
-    }
 
     const { data, error } = await supabase.auth.signUp({
       email: values.email.trim(),
