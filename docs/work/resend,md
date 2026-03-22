@@ -1,0 +1,30 @@
+# Configuración SMTP con Resend
+
+## ✅ Estado: COMPLETADO
+
+### Dominio configurado:
+- **Dominio:** cshdevs.org
+- **Registrar:** Cloudflare
+- **Estado:** Verificado en Resend
+- **Región:** us-east-1
+
+### Credenciales SMTP para Supabase:
+```
+Host: smtp.resend.com
+Port: 465 (SSL) o 587 (TLS)
+Username: resend
+Password: [usar RESEND_API_KEY del .env]
+Sender: noreply@send.cshdevs.org
+```
+
+### Configuración en Supabase:
+1. Dashboard de Supabase → Authentication → SMTP Settings
+2. Configurar con las credenciales arriba
+3. Cambiar `enable_confirmations = true` en config.toml
+4. Ejecutar `supabase config push`
+
+### Registros DNS configurados en Cloudflare:
+- ✅ DKIM: `resend._domainkey.cshdevs.org` (TXT)
+- ✅ MX: `send.cshdevs.org` → feedback-smtp.us-east-1.amazonses.com
+- ✅ SPF: `send.cshdevs.org` (TXT) → v=spf1 include:amazonses.com ~all
+

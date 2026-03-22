@@ -111,8 +111,8 @@ function LoginForm() {
 
     setResetSent(true)
     toast({
-      title: 'Revisá tu correo',
-      description: 'Te enviamos un enlace para restablecer tu contraseña.',
+      title: '✉️ Revisá tu correo',
+      description: 'Te enviamos un enlace desde noreply@send.cshdevs.org para restablecer tu contraseña.',
     })
   }
 

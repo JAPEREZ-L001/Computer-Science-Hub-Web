@@ -103,7 +103,7 @@ function RegisterForm() {
         variant: 'destructive',
         title: isRateLimit ? 'Demasiados intentos' : 'No se pudo registrar',
         description: isRateLimit
-          ? 'Por seguridad, Supabase limita los registros por minuto. Espera un momento e inténtalo de nuevo.'
+          ? 'Por seguridad, esperá un momento antes de intentar nuevamente.'
           : error.message,
       })
       return
@@ -116,9 +116,9 @@ function RegisterForm() {
     }
 
     toast({
-      title: 'Revisa tu correo',
+      title: '✉️ Confirmá tu correo',
       description:
-        'Te enviamos un enlace para confirmar tu cuenta. Después podrás iniciar sesión.',
+        'Te enviamos un email de confirmación desde noreply@send.cshdevs.org. Revisá tu bandeja de entrada y confirmá tu cuenta para poder iniciar sesión.',
     })
   }
 
