@@ -13,6 +13,8 @@ Tu aplicación ahora usa el dominio: **https://cshdevs.org**
 - [x] Mensajes de confirmación mejorados
 - [x] SMTP configurado en `config.toml`
 - [x] Dominio actualizado a `cshdevs.org`
+- [x] Confirmación de email reactivada (`enable_confirmations = true`)
+- [x] Configuración aplicada a Supabase remoto con `supabase config push` (22/03/2026)
 
 ### 🔄 Pasos Restantes en Vercel/Supabase (15-20 minutos)
 
