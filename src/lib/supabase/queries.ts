@@ -58,6 +58,8 @@ export function mapProfileRow(row: {
   github_url?: string | null
   linkedin_url?: string | null
   created_at?: string | null
+  onboarding_completed?: boolean | null
+  reputation_score?: number | null
 }): MemberProfile {
   const areaRaw = row.area ?? 'general'
   const area: MemberArea = isMemberArea(areaRaw) ? areaRaw : 'general'
@@ -82,6 +84,8 @@ export function mapProfileRow(row: {
     linkedin: row.linkedin_url?.trim() || undefined,
     status,
     joinedAt,
+    onboardingCompleted: row.onboarding_completed ?? false,
+    reputationScore: row.reputation_score ?? 0,
   }
 }
 
@@ -90,7 +94,7 @@ export async function fetchActiveProfiles(): Promise<MemberProfile[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
     )
     .eq('status', 'activo')
     .order('full_name', { ascending: true, nullsFirst: false })
@@ -109,7 +113,7 @@ export async function fetchProfileByUserId(userId: string): Promise<MemberProfil
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
     )
     .eq('id', userId)
     .maybeSingle()
@@ -131,7 +135,7 @@ export async function fetchRelatedMembers(
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
     )
     .eq('status', 'activo')
     .eq('area', area)

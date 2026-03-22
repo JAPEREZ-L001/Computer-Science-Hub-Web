@@ -20,6 +20,8 @@ export interface MemberProfile {
   linkedin?: string
   status: MemberStatus
   joinedAt: string
+  onboardingCompleted: boolean
+  reputationScore: number
 }
 
 export type NewsCategory = 'anuncio' | 'logro' | 'evento' | 'update'

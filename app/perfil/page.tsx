@@ -70,6 +70,11 @@ export default async function PerfilPage() {
     )
   }
 
+  // FORCE ONBOARDING
+  if (!member.onboardingCompleted) {
+    redirect('/onboarding')
+  }
+
   const profileFields = [
     Boolean(member.bio),
     Boolean(member.github),
@@ -82,6 +87,41 @@ export default async function PerfilPage() {
   const profileCompletion = Math.round((completedFields / profileFields.length) * 100)
   const relatedMembers = await fetchRelatedMembers(member.area, member.id, 3)
   const membershipMonths = Math.max(differenceInMonths(new Date(), new Date(member.joinedAt)), 0)
+
+  // Fetch User Events
+  const { data: eventRegs } = await supabase
+    .from('event_registrations')
+    .select('event_id, events (id, title, date, time)')
+    .eq('user_id', user.id)
+    .order('registered_at', { ascending: false })
+    .limit(5)
+  
+  const myEvents = (eventRegs || [])
+    .map((reg) => reg.events as any)
+    .filter(Boolean)
+
+  // Fetch Tutoring Requests
+  const { data: requestedTutorships } = await supabase
+    .from('tutoring_requests')
+    .select('id, topic, status, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(3)
+
+  // Fetch Mentor Profile
+  const { data: mentorProfile } = await supabase
+    .from('mentor_matching_profiles')
+    .select('role, active')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  // Fetch My Ideas
+  const { data: myIdeas } = await supabase
+    .from('community_ideas')
+    .select('id, title, status, created_at')
+    .eq('author_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(3)
 
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white overflow-x-hidden pt-10">
@@ -184,6 +224,128 @@ export default async function PerfilPage() {
                   <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-400/50">
                     {membershipMonths} {membershipMonths === 1 ? 'mes' : 'meses'} contigo
                   </p>
+                </div>
+              </div>
+            </div>
+
+            {/* DASHBOARD SECTION: Mis Puntos, Eventos, Tutorías */}
+            <div className="mt-6 grid gap-6 md:grid-cols-4">
+              {/* Mis Puntos */}
+              <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8 flex flex-col justify-center text-center">
+                <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400/80">
+                  Reputación
+                </h2>
+                <div className="my-2 text-4xl font-bold flex items-baseline justify-center gap-1 text-white">
+                  {member.reputationScore}<span className="text-xl text-white/30">pts</span>
+                </div>
+                <p className="mt-2 text-[9px] uppercase tracking-widest text-white/40 font-semibold">
+                  {member.reputationScore >= 50 ? 'Experto' : member.reputationScore >= 20 ? 'Intermedio' : 'Inicial'}
+                </p>
+              </div>
+
+              {/* Mis Eventos Próximos */}
+              <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8 md:col-span-3 flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-6 border-b border-white/[0.06] pb-4">
+                  <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 flex items-center gap-2">
+                    <CalendarDays className="h-3 w-3" />
+                    Mis inscripciones a eventos
+                  </h2>
+                  <Link href="/eventos" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/40 transition-colors hover:text-white">
+                    Explorar <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
+                {myEvents.length === 0 ? (
+                  <div className="py-6 text-center h-full flex flex-col items-center justify-center">
+                    <p className="text-sm font-medium text-white/30 mb-4">No estás inscrito en ningún evento próximo.</p>
+                    <Link href="/eventos" className="inline-flex items-center justify-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/60 transition-all hover:bg-white/[0.06] hover:text-white">
+                      Ver agenda
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {myEvents.map((ev: any) => (
+                      <div key={ev.id} className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
+                        <div>
+                          <p className="text-sm font-bold text-white mb-1">{ev.title}</p>
+                          <p className="text-xs text-white/40">{ev.date} - {ev.time}</p>
+                        </div>
+                        <span className="text-[9px] uppercase tracking-widest font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full">Suscrito</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
+              {/* Mis Ideas */}
+              <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8 flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-6 border-b border-white/[0.06] pb-4">
+                  <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 flex items-center gap-2">
+                    <Zap className="h-3 w-3" />
+                    Mis Ideas Propuestas
+                  </h2>
+                  <Link href="/comunidad/ideas" className="text-[10px] uppercase font-bold text-white/40 hover:text-white transition-colors flex items-center gap-1">
+                    Comunidad <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+                {myIdeas && myIdeas.length > 0 ? (
+                  <div className="flex flex-col gap-3">
+                    {myIdeas.map((idea) => (
+                      <div key={idea.id} className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
+                        <p className="text-sm font-bold text-white line-clamp-1">{idea.title}</p>
+                        <span className={`text-[9px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full ${idea.status === 'approved' ? 'text-emerald-400 bg-emerald-400/10' : idea.status === 'open' ? 'text-blue-400 bg-blue-400/10' : 'text-amber-400 bg-amber-400/10'}`}>
+                          {idea.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-6 text-center text-sm font-medium text-white/30">
+                    Aún no has propuesto ninguna idea.
+                  </div>
+                )}
+              </div>
+
+              {/* Mis Tutorías */}
+              <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8 flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-6 border-b border-white/[0.06] pb-4">
+                  <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 flex items-center gap-2">
+                    <Activity className="h-3 w-3" />
+                    Tutorías solicitadas
+                  </h2>
+                  <Link href="/comunidad/tutorias" className="text-[10px] uppercase font-bold text-white/40 hover:text-white transition-colors flex items-center gap-1">
+                    Ver más <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+                
+                {requestedTutorships && requestedTutorships.length > 0 ? (
+                  <div className="flex flex-col gap-3">
+                    {requestedTutorships.map((tut) => (
+                      <div key={tut.id} className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
+                        <p className="text-sm font-bold text-white line-clamp-1">{tut.topic}</p>
+                        <span className={`text-[9px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full ${tut.status === 'matched' ? 'text-emerald-400 bg-emerald-400/10' : 'text-amber-400 bg-amber-400/10'}`}>
+                          {tut.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-2 text-center text-sm font-medium text-white/30">
+                    No tienes solicitudes de tutoría pendientes.
+                  </div>
+                )}
+
+                {/* Rol de Mentor */}
+                <div className="mt-4 pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Rol actual:</span>
+                  {(mentorProfile?.role === 'mentor' || mentorProfile?.role === 'both') && mentorProfile?.active ? (
+                    <span className="text-[9px] uppercase font-bold bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 px-3 py-1.5 rounded-full">
+                      Tutor activo
+                    </span>
+                  ) : (
+                    <span className="text-[9px] uppercase font-bold text-white/30">Estudiante</span>
+                  )}
                 </div>
               </div>
             </div>

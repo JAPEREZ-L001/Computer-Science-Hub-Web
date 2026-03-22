@@ -12,6 +12,8 @@ export const mockMembers: MemberProfile[] = [
     linkedin: 'https://www.linkedin.com/in/ana-ml',
     status: 'activo',
     joinedAt: '2026-02-10',
+    onboardingCompleted: true,
+    reputationScore: 50,
   },
   {
     id: 'm-udb-0002',
@@ -22,6 +24,8 @@ export const mockMembers: MemberProfile[] = [
     github: 'https://github.com/carlos-er',
     status: 'activo',
     joinedAt: '2026-01-22',
+    onboardingCompleted: true,
+    reputationScore: 20,
   },
   {
     id: 'm-udb-0003',
@@ -33,6 +37,8 @@ export const mockMembers: MemberProfile[] = [
     linkedin: 'https://www.linkedin.com/in/daniela-sm',
     status: 'activo',
     joinedAt: '2026-02-28',
+    onboardingCompleted: true,
+    reputationScore: 10,
   },
   {
     id: 'm-udb-0004',
@@ -44,6 +50,8 @@ export const mockMembers: MemberProfile[] = [
     linkedin: 'https://www.linkedin.com/in/eduardo-ac',
     status: 'activo',
     joinedAt: '2026-01-30',
+    onboardingCompleted: true,
+    reputationScore: 35,
   },
   {
     id: 'm-udb-0005',
@@ -55,6 +63,8 @@ export const mockMembers: MemberProfile[] = [
     github: 'https://github.com/fer-garcia',
     status: 'activo',
     joinedAt: '2026-03-01',
+    onboardingCompleted: true,
+    reputationScore: 5,
   },
   {
     id: 'm-udb-0006',
@@ -66,6 +76,8 @@ export const mockMembers: MemberProfile[] = [
     github: 'https://github.com/reneh',
     status: 'activo',
     joinedAt: '2026-02-05',
+    onboardingCompleted: true,
+    reputationScore: 15,
   },
   {
     id: 'm-udb-0007',
@@ -75,6 +87,8 @@ export const mockMembers: MemberProfile[] = [
     area: 'general',
     status: 'activo',
     joinedAt: '2026-03-08',
+    onboardingCompleted: false,
+    reputationScore: 0,
   },
   {
     id: 'm-udb-0008',
@@ -86,6 +100,8 @@ export const mockMembers: MemberProfile[] = [
     linkedin: 'https://www.linkedin.com/in/jose-miguel-p',
     status: 'inactivo',
     joinedAt: '2025-12-18',
+    onboardingCompleted: true,
+    reputationScore: 60,
   },
 ]
 

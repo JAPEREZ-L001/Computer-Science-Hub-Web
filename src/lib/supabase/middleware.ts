@@ -36,7 +36,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
-  const isProtected = pathname.startsWith('/perfil')
+  const isProtected = pathname.startsWith('/perfil') || pathname.startsWith('/onboarding')
   const isAdminRoute = pathname.startsWith('/admin')
   const isAuthPage = pathname === '/login' || pathname === '/registro'
   const isAnonymous = user?.is_anonymous === true
