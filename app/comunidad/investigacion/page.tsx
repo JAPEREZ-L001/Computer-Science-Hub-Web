@@ -10,6 +10,7 @@ export default async function InvestigacionPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/investigacion"
       eyebrow="CSH-37 · Investigación"
       title="Publicaciones"
       titleAccent="y líneas de trabajo"

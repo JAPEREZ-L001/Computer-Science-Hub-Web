@@ -1,9 +1,16 @@
 'use server'
 
+import { z } from 'zod'
+
 import { createClient } from '@/src/lib/supabase/server'
 
 const VALID_GOALS = ['apoyo', 'comunidad', 'profesional'] as const
 type Goal = (typeof VALID_GOALS)[number]
+
+const MAX_NAME_LENGTH = 100
+const MAX_DETAIL_LENGTH = 1000
+
+const emailSchema = z.string().email().max(254)
 
 export async function submitInterest(form: {
   name: string
@@ -21,14 +28,25 @@ export async function submitInterest(form: {
     return { ok: false as const, message: 'Seleccioná al menos una opción.' }
   }
 
+  const name = form.name.trim().slice(0, MAX_NAME_LENGTH) || null
+  const detail = form.detail.trim().slice(0, MAX_DETAIL_LENGTH) || null
+
+  const emailRaw = form.email.trim()
+  const emailParsed = emailSchema.safeParse(emailRaw)
+  const email = emailParsed.success ? emailParsed.data : null
+
+  if (emailRaw && !emailParsed.success) {
+    return { ok: false as const, message: 'El email ingresado no es válido.' }
+  }
+
   const userId = user && !user.is_anonymous ? user.id : null
 
   const { error } = await supabase.from('member_interests').insert({
     user_id: userId,
-    name: form.name.trim() || null,
-    email: form.email.trim() || null,
+    name,
+    email,
     goals,
-    detail: form.detail.trim() || null,
+    detail,
   })
 
   if (error) {
@@ -38,3 +56,4 @@ export async function submitInterest(form: {
 
   return { ok: true as const }
 }
+

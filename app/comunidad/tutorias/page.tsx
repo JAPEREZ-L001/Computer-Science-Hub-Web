@@ -20,6 +20,7 @@ export default async function TutoriasPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/tutorias"
       eyebrow="CSH-34 · Tutorías"
       title="Pedí tutoría"
       titleAccent="cuando la necesites"

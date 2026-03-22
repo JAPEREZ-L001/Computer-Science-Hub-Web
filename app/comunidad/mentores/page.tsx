@@ -31,6 +31,7 @@ export default async function MentoresPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/mentores"
       eyebrow="CSH-40 · Matching"
       title="Mentores"
       titleAccent="y preferencias"

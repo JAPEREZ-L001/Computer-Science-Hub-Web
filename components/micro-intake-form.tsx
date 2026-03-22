@@ -41,12 +41,12 @@ export function MicroIntakeForm({ variant = "home" }: { variant?: "home" | "prog
 
   const title =
     variant === "home"
-      ? "Contános qué estás buscando"
+      ? "¿Te sumas a construir el Hub?"
       : "Decinos en qué programa te gustaría involucrarte"
 
   const subtitle =
     variant === "home"
-      ? "Este es el primer paso: en menos de un minuto nos das contexto para poder contactarte con la iniciativa correcta dentro del Hub."
+      ? "Únete a una red de estudiantes apasionados que construyen en el mundo real. Este es el primer paso: en menos de un minuto nos das contexto para poder contactarte con la iniciativa correcta."
       : "Usamos esta información para conectarte con el programa que mejor encaje con tu momento actual y tu carrera."
 
   const toggleGoal = (goal: GoalOption) => {

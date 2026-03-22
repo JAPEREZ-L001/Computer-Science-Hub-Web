@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { PageBreadcrumb } from '@/components/page-breadcrumb'
 
 export function ComunidadShell({
   eyebrow,
@@ -10,6 +11,7 @@ export function ComunidadShell({
   description,
   children,
   beforeFooter,
+  pathname,
 }: {
   eyebrow: string
   title: string
@@ -18,6 +20,8 @@ export function ComunidadShell({
   children: ReactNode
   /** Contenido entre la sección principal y el footer (p. ej. sugerencias contextuales) */
   beforeFooter?: ReactNode
+  /** El pathname de la ruta actual para generar el breadcrumb automáticamente */
+  pathname?: string
 }) {
   return (
     <main className="min-h-screen bg-[#0D0D0D] text-white">
@@ -26,6 +30,9 @@ export function ComunidadShell({
         <section className="relative pt-36 pb-16 sm:pt-40">
           <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+            {pathname && (
+              <PageBreadcrumb pathname={pathname} className="mb-6" />
+            )}
             <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.3em] text-white/40">
               {eyebrow}
             </span>
@@ -46,3 +53,4 @@ export function ComunidadShell({
     </main>
   )
 }
+

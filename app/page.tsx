@@ -15,12 +15,11 @@ export default async function Home() {
       <Header />
       <div className="overflow-x-hidden">
         <HeroSection />
+        <InteractiveFeaturesSection />
+        <HomeGrowthSections />
         <SitePath />
         <SocialProofStrip />
-        <HomeGrowthSections />
-        <InteractiveFeaturesSection />
         <SponsorsSection />
-        <CTASection />
         <MicroIntakeForm variant="home" />
         <Footer />
       </div>

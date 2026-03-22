@@ -26,25 +26,13 @@
 
 ---
 
-### `GET /sobre` — Sobre CSH
+### `GET /nosotros` — Conócenos
 - **Acceso:** 🌐 Público
-- **Propósito:** Quiénes somos, cómo trabajamos, hacia dónde vamos
-- **Lleva hacia:** `/programas`, `/oportunidades`
+- **Propósito:** Quiénes somos, filosofía, valores, y cómo trabajamos (consolidado)
+- **Secciones:** Secciones de "Sobre", "Valores" y "Programas" unificadas
+- **Lleva hacia:** `/oportunidades`, `/recursos`, `/comunidad`
 
----
-
-### `GET /valores` — Valores y Cultura
-- **Acceso:** 🌐 Público
-- **Propósito:** Los 7 valores del Hub con animaciones al scroll
-- **Lleva hacia:** `/programas`
-
----
-
-### `GET /programas` — Programas
-- **Acceso:** 🌐 Público
-- **Propósito:** Líneas de acción académicas, organizativas y profesionales
-- **Incluye:** Formulario de interés (`MicroIntakeForm`)
-- **Lleva hacia:** `/oportunidades`, `/recursos`
+> **Redirects permanentes:** `/sobre`, `/valores`, `/programas` → `/nosotros` (definidos en `next.config.mjs`)
 
 ---
 

@@ -10,6 +10,7 @@ export default async function DocumentacionPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/documentacion"
       eyebrow="CSH-35 · Documentación"
       title="Repositorio"
       titleAccent="de guías del Hub"

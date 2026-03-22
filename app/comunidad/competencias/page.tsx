@@ -15,6 +15,7 @@ export default async function CompetenciasPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/competencias"
       eyebrow="CSH-38 · Competencias"
       title="Ranking"
       titleAccent="de temporada (demo)"

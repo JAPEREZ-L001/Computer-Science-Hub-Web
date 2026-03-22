@@ -21,6 +21,7 @@ export default async function IdeasPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/ideas"
       eyebrow="CSH-39 · Votación"
       title="Licitación"
       titleAccent="de ideas"

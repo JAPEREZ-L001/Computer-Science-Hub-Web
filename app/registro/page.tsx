@@ -40,8 +40,12 @@ const registerSchema = z
       .int('El ciclo debe ser un número entero')
       .min(1, 'El ciclo debe estar entre 1 y 10')
       .max(10, 'El ciclo debe estar entre 1 y 10'),
-    password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-    confirmPassword: z.string().min(6, 'Confirma tu contraseña'),
+    password: z
+      .string()
+      .min(8, 'La contraseña debe tener al menos 8 caracteres')
+      .regex(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
+      .regex(/[0-9]/, 'Debe contener al menos un número'),
+    confirmPassword: z.string().min(8, 'Confirma tu contraseña'),
     acceptTerms: z.boolean().refine((v) => v === true, {
       message: 'Debes aceptar los términos para continuar',
     }),

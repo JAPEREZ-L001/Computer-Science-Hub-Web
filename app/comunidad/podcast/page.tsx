@@ -10,6 +10,7 @@ export default async function PodcastPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/podcast"
       eyebrow="CSH-36 · Media"
       title="Podcast"
       titleAccent="y audio del Hub"

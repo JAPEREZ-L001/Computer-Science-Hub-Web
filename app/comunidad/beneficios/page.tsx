@@ -9,22 +9,31 @@ import { ExternalLink } from 'lucide-react'
 
 const staticBenefits = [
   {
-    title: 'Eventos y talleres',
-    body: 'Prioridad en cupos limitados y sesiones solo para miembros activos.',
+    title: 'Sistema de Nivelación',
+    body: 'Aprendé de miembros veteranos desde el primer día. Los más avanzados te acompañan en tu roadmap técnico mientras vos aportás energía y perspectiva nueva.',
   },
   {
-    title: 'Red de mentores',
-    body: 'Acceso al directorio y solicitudes de tutoría coordinadas por el Hub.',
+    title: 'Red de mentores activos',
+    body: 'Matching con estudiantes de ciclos avanzados y alumni para guía técnica real: portafolios, proyectos y preparación profesional continua.',
   },
   {
-    title: 'Documentación y media',
-    body: 'Guías internas, podcast y material de investigación en evolución.',
+    title: 'Prioridad en eventos y workshops',
+    body: 'Cupos reservados y acceso anticipado a todos los talleres del hub: ciberseguridad, IA, UX/UI, Git, Hackathons internos y más.',
   },
   {
-    title: 'Voz en prioridades',
-    body: 'Votación de ideas y canales para proponer mejoras al espacio físico y digital.',
+    title: 'Repositorio exclusivo del Hub',
+    body: 'Accedé al material curado por generaciones anteriores: parciales, apuntes, guías de materias y proyectos que no vas a encontrar en ningún otro lado.',
+  },
+  {
+    title: 'Vínculo con la Dirección de Innovación UDB',
+    body: 'Como miembro activo tenés acceso prioritario a charlas, convocatorias de horas sociales y programas de la Dirección de Innovación de la UDB.',
+  },
+  {
+    title: 'Voz en la licitación de ideas',
+    body: 'Votá y proponé las próximas iniciativas del hub. Las decisiones sobre eventos, proyectos y dirección del CSH las tomamos entre todos los miembros.',
   },
 ] as const
+
 
 export default async function BeneficiosPage() {
   const supabase = await createClient()
@@ -37,6 +46,7 @@ export default async function BeneficiosPage() {
 
   return (
     <ComunidadShell
+      pathname="/comunidad/beneficios"
       eyebrow="CSH-41 · Afiliación"
       title="Beneficios"
       titleAccent="de ser miembro"
