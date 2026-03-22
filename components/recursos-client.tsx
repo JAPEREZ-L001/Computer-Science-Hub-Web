@@ -6,6 +6,7 @@ import { ArrowRight, ExternalLink, BookOpen, Code, Cpu, Palette, Filter } from "
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { useInView } from "@/hooks/use-in-view"
+import { MagneticCard } from "@/components/ui/magnetic-card"
 
 import type { ResourceRow } from "@/src/lib/supabase/queries"
 
@@ -71,9 +72,10 @@ function ResourceCard({ recurso, index }: { recurso: RecursoUi; index: number })
   }
 
   return (
-    <div
+    <MagneticCard
       ref={ref}
-      className={`group flex flex-col justify-between rounded-3xl border border-white/[0.08] bg-white/[0.02] p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white/[0.15] hover:bg-white/[0.04] hover:shadow-[0_20px_40px_-20px_rgba(255,255,255,0.05)] reveal-scale stagger-${(index % 4) + 1} ${isInView ? "visible" : ""} h-full min-h-[220px]`}
+      className={`group flex flex-col justify-between p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white/[0.15] hover:bg-white/[0.04] reveal-scale stagger-${(index % 4) + 1} ${isInView ? "visible" : ""} h-full min-h-[220px]`}
+      glowColor="rgba(192, 132, 252, 0.15)" // purple glow for resources
     >
       <div>
         <div className="flex items-start justify-between gap-4 mb-4">
@@ -107,7 +109,7 @@ function ResourceCard({ recurso, index }: { recurso: RecursoUi; index: number })
           {recurso.fuente}
         </span>
       </div>
-    </div>
+    </MagneticCard>
   )
 }
 

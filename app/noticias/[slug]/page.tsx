@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import type { ReactNode } from 'react'
-import { ArrowLeft } from 'lucide-react'
+
+import { PageBreadcrumb } from '@/components/page-breadcrumb'
 
 import { fetchNewsBySlug } from '@/src/lib/supabase/queries'
 import type { NewsCategory } from '@/src/types'
@@ -33,6 +34,16 @@ function categoryBadgeClass(category: NewsCategory) {
   }
 }
 
+/**
+ * Sanitise text content coming from database Markdown to prevent
+ * HTML injection. React JSX auto‑escapes string children, but this
+ * function provides defence‑in‑depth by stripping any embedded HTML
+ * tags *before* they reach the render tree.
+ */
+function stripHtmlTags(text: string): string {
+  return text.replace(/<[^>]*>/g, '')
+}
+
 function renderBasicMarkdown(content: string): ReactNode[] {
   const lines = content.split(/\r?\n/)
   const nodes: ReactNode[] = []
@@ -44,7 +55,7 @@ function renderBasicMarkdown(content: string): ReactNode[] {
       nodes.push(
         <ul key={`ul-${nodes.length}`} className="my-6 ml-6 list-disc space-y-2 text-white/70">
           {listBuffer.items.map((it, idx) => (
-            <li key={`${idx}`} className="leading-relaxed">{it}</li>
+            <li key={`${idx}`} className="leading-relaxed">{stripHtmlTags(it)}</li>
           ))}
         </ul>,
       )
@@ -52,7 +63,7 @@ function renderBasicMarkdown(content: string): ReactNode[] {
       nodes.push(
         <ol key={`ol-${nodes.length}`} className="my-6 ml-6 list-decimal space-y-2 text-white/70">
           {listBuffer.items.map((it, idx) => (
-            <li key={`${idx}`} className="leading-relaxed">{it}</li>
+            <li key={`${idx}`} className="leading-relaxed">{stripHtmlTags(it)}</li>
           ))}
         </ol>,
       )
@@ -73,7 +84,7 @@ function renderBasicMarkdown(content: string): ReactNode[] {
       flushList()
       nodes.push(
         <h2 key={`h2-${nodes.length}`} className="mt-12 mb-6 text-2xl font-bold tracking-tight text-white border-b border-white/[0.06] pb-4">
-          {trimmed.slice(3)}
+          {stripHtmlTags(trimmed.slice(3))}
         </h2>,
       )
       continue
@@ -83,7 +94,7 @@ function renderBasicMarkdown(content: string): ReactNode[] {
       flushList()
       nodes.push(
         <h3 key={`h3-${nodes.length}`} className="mt-8 mb-4 text-xl font-bold text-white/90">
-          {trimmed.slice(4)}
+          {stripHtmlTags(trimmed.slice(4))}
         </h3>,
       )
       continue
@@ -115,7 +126,7 @@ function renderBasicMarkdown(content: string): ReactNode[] {
     flushList()
     nodes.push(
       <p key={`p-${nodes.length}`} className="mb-6 leading-loose text-white/60">
-        {trimmed}
+        {stripHtmlTags(trimmed)}
       </p>,
     )
   }
@@ -143,10 +154,10 @@ export default async function NoticiaSlugPage({
       <div className="mx-auto max-w-3xl px-4 pt-24 pb-32 sm:px-6">
         
         <div className="mb-12">
-          <Link href="/noticias" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/30 transition-colors hover:text-white/70">
-            <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
-            Volver a Noticias
-          </Link>
+          <PageBreadcrumb
+            pathname="/noticias"
+            finalLabel={post.title}
+          />
         </div>
 
         <article>

@@ -20,3 +20,12 @@ node_modules/
 
 # Supabase CLI (credenciales de enlace locales)
 supabase/.temp/
+
+# Temporary files
+tmp-*.txt
+tmp_*.txt
+*.log
+
+# Operational scripts (not application code)
+*.ps1
+

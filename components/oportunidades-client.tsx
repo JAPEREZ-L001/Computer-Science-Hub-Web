@@ -6,6 +6,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ContextualSuggestion } from "@/components/contextual-suggestion"
 import { useInView } from "@/hooks/use-in-view"
+import { MagneticCard } from "@/components/ui/magnetic-card"
 
 import type { OpportunityRow } from "@/src/lib/supabase/queries"
 
@@ -13,9 +14,10 @@ function OportunidadCard({ op, index }: { op: OpportunityRow; index: number }) {
   const { ref, isInView } = useInView({ threshold: 0.15 })
 
   return (
-    <div
+    <MagneticCard
       ref={ref}
-      className={`group flex flex-col md:flex-row md:items-start md:justify-between rounded-3xl border border-white/[0.08] bg-white/[0.02] p-6 sm:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white/[0.15] hover:bg-white/[0.04] hover:shadow-[0_20px_40px_-20px_rgba(255,255,255,0.05)] reveal-up stagger-${(index % 4) + 1} ${isInView ? "visible" : ""} min-w-0 overflow-hidden gap-6`}
+      className={`group flex flex-col md:flex-row md:items-start md:justify-between p-6 sm:p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white/[0.15] hover:bg-white/[0.04] reveal-up stagger-${(index % 4) + 1} ${isInView ? "visible" : ""} min-w-0 overflow-hidden gap-6`}
+      glowColor="rgba(56, 189, 248, 0.15)" // cyan glow
     >
       <div className="flex-1 min-w-0 overflow-hidden">
         <div className="flex items-center gap-3 mb-4 min-w-0">
@@ -52,7 +54,7 @@ function OportunidadCard({ op, index }: { op: OpportunityRow; index: number }) {
         Ver convocatoria
         <ExternalLink className="h-3.5 w-3.5" />
       </Link>
-    </div>
+    </MagneticCard>
   )
 }
 
