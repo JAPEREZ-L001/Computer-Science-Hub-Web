@@ -100,13 +100,15 @@ function ScoreField({
   onChange: (value: number) => void
 }) {
   return (
-    <div className="grid gap-2">
-      <Label htmlFor={id}>{label}</Label>
+    <div className="grid min-w-0 gap-2">
+      <Label htmlFor={id} className="h-auto min-w-0 items-start break-words text-left text-sm font-medium leading-snug text-white">
+        {label}
+      </Label>
       <select
         id={id}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-10 w-full rounded-md border border-white/15 bg-zinc-900 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 [color-scheme:dark]"
+        className="h-11 w-full min-w-0 max-w-full rounded-md border border-white/15 bg-zinc-900 px-3 text-base text-white focus:outline-none focus:ring-2 focus:ring-white/20 sm:h-10 sm:text-sm [color-scheme:dark]"
       >
         {[1, 2, 3, 4, 5].map((v) => (
           <option key={v} value={v} className="bg-zinc-900 text-white">
@@ -231,12 +233,17 @@ export function BetatesterSurveyForm() {
   }
 
   const selectBaseClass =
-    'h-10 w-full rounded-md border border-white/15 bg-zinc-900 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20 [color-scheme:dark]'
+    'h-11 w-full min-w-0 max-w-full rounded-md border border-white/15 bg-zinc-900 px-3 text-base text-white focus:outline-none focus:ring-2 focus:ring-white/20 sm:h-10 sm:text-sm [color-scheme:dark]'
+
+  const fieldShell = 'grid min-w-0 gap-2'
+  const inputClass = 'min-w-0 border-white/[0.08] bg-white/[0.03] text-base sm:text-sm'
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
-      <div className="grid gap-2">
-        <Label htmlFor="survey-type">Tipo de participante</Label>
+    <form onSubmit={onSubmit} className="min-w-0 space-y-6 sm:space-y-8">
+      <div className={fieldShell}>
+        <Label htmlFor="survey-type" className="min-w-0 break-words leading-snug">
+          Tipo de participante
+        </Label>
         <select
           id="survey-type"
           value={surveyType}
@@ -253,10 +260,12 @@ export function BetatesterSurveyForm() {
       </div>
 
       {surveyType === 'nuevo' ? (
-        <section className="space-y-4 rounded-xl border border-white/[0.08] p-4">
-          <h2 className="font-semibold text-white">Sección usuarios nuevos</h2>
-          <div className="grid gap-2">
-            <Label>Rol principal</Label>
+        <section className="min-w-0 space-y-4 overflow-hidden rounded-xl border border-white/[0.08] p-3 sm:p-4">
+          <h2 className="text-base font-semibold leading-snug text-white sm:text-lg">
+            Sección usuarios nuevos
+          </h2>
+          <div className={fieldShell}>
+            <Label className="min-w-0 break-words leading-snug">Rol principal</Label>
             <select
               value={newSurvey.role}
               onChange={(e) =>
@@ -271,24 +280,28 @@ export function BetatesterSurveyForm() {
             </select>
           </div>
           {newSurvey.role === 'otro' && (
-            <div className="grid gap-2">
-              <Label htmlFor="role-other">Especifica tu rol</Label>
+            <div className={fieldShell}>
+              <Label htmlFor="role-other" className="min-w-0 break-words leading-snug">
+                Especifica tu rol
+              </Label>
               <Input
                 id="role-other"
                 value={newSurvey.roleOther}
                 onChange={(e) => setNewSurvey((s) => ({ ...s, roleOther: e.target.value }))}
-                className="bg-white/[0.03] border-white/[0.08]"
+                className={inputClass}
               />
             </div>
           )}
-          <div className="grid gap-2">
-            <Label htmlFor="home-offer">En una frase, ¿qué ofrece CSH?</Label>
+          <div className={fieldShell}>
+            <Label htmlFor="home-offer" className="min-w-0 break-words leading-snug">
+              En una frase, ¿qué ofrece CSH?
+            </Label>
             <Textarea
               id="home-offer"
               rows={3}
               value={newSurvey.homeOfferSummary}
               onChange={(e) => setNewSurvey((s) => ({ ...s, homeOfferSummary: e.target.value }))}
-              className="bg-white/[0.03] border-white/[0.08]"
+              className={`${inputClass} min-h-[5rem]`}
               required
             />
           </div>
@@ -304,8 +317,10 @@ export function BetatesterSurveyForm() {
             value={newSurvey.registerProbability}
             onChange={(v) => setNewSurvey((s) => ({ ...s, registerProbability: v }))}
           />
-          <div className="grid gap-2">
-            <Label htmlFor="new-improvement">Mejora #1 para usuarios nuevos</Label>
+          <div className={fieldShell}>
+            <Label htmlFor="new-improvement" className="min-w-0 break-words leading-snug">
+              Mejora #1 para usuarios nuevos
+            </Label>
             <Textarea
               id="new-improvement"
               rows={3}
@@ -313,16 +328,18 @@ export function BetatesterSurveyForm() {
               onChange={(e) =>
                 setNewSurvey((s) => ({ ...s, topNewUserImprovement: e.target.value }))
               }
-              className="bg-white/[0.03] border-white/[0.08]"
+              className={`${inputClass} min-h-[5rem]`}
               required
             />
           </div>
         </section>
       ) : (
-        <section className="space-y-4 rounded-xl border border-white/[0.08] p-4">
-          <h2 className="font-semibold text-white">Sección usuarios recurrentes</h2>
-          <div className="grid gap-2">
-            <Label>Comparación respecto a ronda anterior</Label>
+        <section className="min-w-0 space-y-4 overflow-hidden rounded-xl border border-white/[0.08] p-3 sm:p-4">
+          <h2 className="text-base font-semibold leading-snug text-white sm:text-lg">
+            Sección usuarios recurrentes
+          </h2>
+          <div className={fieldShell}>
+            <Label className="min-w-0 break-words leading-snug">Comparación respecto a ronda anterior</Label>
             <select
               value={returningSurvey.overallComparedToPrevious}
               onChange={(e) =>
@@ -339,27 +356,32 @@ export function BetatesterSurveyForm() {
               <option value="peor" className="bg-zinc-900 text-white">Peor</option>
             </select>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="pending-aspect">Aspecto principal pendiente</Label>
+          <div className={fieldShell}>
+            <Label htmlFor="pending-aspect" className="min-w-0 break-words leading-snug">
+              Aspecto principal pendiente
+            </Label>
             <Textarea
               id="pending-aspect"
               rows={3}
               value={returningSurvey.pendingAspect}
               onChange={(e) => setReturningSurvey((s) => ({ ...s, pendingAspect: e.target.value }))}
-              className="bg-white/[0.03] border-white/[0.08]"
+              className={`${inputClass} min-h-[5rem]`}
               required
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 gap-3">
             <input
               id="used-community"
               type="checkbox"
+              className="mt-1 size-4 shrink-0 rounded border-white/20 accent-sky-500"
               checked={returningSurvey.usedCommunityHub}
               onChange={(e) =>
                 setReturningSurvey((s) => ({ ...s, usedCommunityHub: e.target.checked }))
               }
             />
-            <Label htmlFor="used-community">Entré al hub de comunidad</Label>
+            <Label htmlFor="used-community" className="min-w-0 flex-1 leading-snug break-words">
+              Entré al hub de comunidad
+            </Label>
           </div>
           <ScoreField
             id="weekly-return"
@@ -367,22 +389,26 @@ export function BetatesterSurveyForm() {
             value={returningSurvey.weeklyReturnProbability}
             onChange={(v) => setReturningSurvey((s) => ({ ...s, weeklyReturnProbability: v }))}
           />
-          <div className="grid gap-2">
-            <Label htmlFor="po-change">Sí fueras Miembro de CSH, ¿qué te gustaría cambiar primero?</Label>
+          <div className={fieldShell}>
+            <Label htmlFor="po-change" className="min-w-0 break-words leading-snug">
+              Sí fueras Miembro de CSH, ¿qué te gustaría cambiar primero?
+            </Label>
             <Textarea
               id="po-change"
               rows={3}
               value={returningSurvey.poFirstChange}
               onChange={(e) => setReturningSurvey((s) => ({ ...s, poFirstChange: e.target.value }))}
-              className="bg-white/[0.03] border-white/[0.08]"
+              className={`${inputClass} min-h-[5rem]`}
               required
             />
           </div>
         </section>
       )}
 
-      <section className="space-y-4 rounded-xl border border-sky-400/30 bg-sky-500/[0.04] p-4">
-        <h2 className="font-semibold text-sky-200">Bloque común de valor (todos responden)</h2>
+      <section className="min-w-0 space-y-4 overflow-hidden rounded-xl border border-sky-400/30 bg-sky-500/[0.04] p-3 sm:p-4">
+        <h2 className="text-base font-semibold leading-snug text-sky-200 sm:text-lg">
+          Bloque común de valor (todos responden)
+        </h2>
         <ScoreField
           id="common-clarity"
           label="Claridad de la propuesta de valor general"
@@ -401,30 +427,34 @@ export function BetatesterSurveyForm() {
           value={commonRecommendProbability}
           onChange={setCommonRecommendProbability}
         />
-        <div className="grid gap-2">
-          <Label htmlFor="common-module">Módulo o ruta de mayor valor percibido</Label>
+        <div className={fieldShell}>
+          <Label htmlFor="common-module" className="min-w-0 break-words leading-snug">
+            Módulo o ruta de mayor valor percibido
+          </Label>
           <Input
             id="common-module"
             value={commonMostValuableModule}
             onChange={(e) => setCommonMostValuableModule(e.target.value)}
-            className="bg-white/[0.03] border-white/[0.08]"
+            className={inputClass}
             required
           />
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="common-improvement">Mejora prioritaria #1</Label>
+        <div className={fieldShell}>
+          <Label htmlFor="common-improvement" className="min-w-0 break-words leading-snug">
+            Mejora prioritaria #1
+          </Label>
           <Textarea
             id="common-improvement"
             rows={3}
             value={commonPriorityImprovement}
             onChange={(e) => setCommonPriorityImprovement(e.target.value)}
-            className="bg-white/[0.03] border-white/[0.08]"
+            className={`${inputClass} min-h-[5rem]`}
             required
           />
         </div>
       </section>
 
-      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+      <Button type="submit" disabled={pending} className="h-12 w-full min-w-0 sm:h-10 sm:w-auto">
         {pending ? 'Enviando encuesta...' : 'Enviar encuesta betatester'}
       </Button>
     </form>

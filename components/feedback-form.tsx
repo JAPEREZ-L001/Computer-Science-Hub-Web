@@ -32,44 +32,50 @@ export function FeedbackForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid gap-2">
-        <Label htmlFor="fb-name">Nombre completo</Label>
+    <form onSubmit={handleSubmit} className="min-w-0 space-y-6">
+      <div className="grid min-w-0 gap-2">
+        <Label htmlFor="fb-name" className="min-w-0 break-words leading-snug">
+          Nombre completo
+        </Label>
         <Input
           id="fb-name"
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           placeholder="Tu nombre"
-          className="bg-white/[0.03] border-white/[0.08]"
+          className="min-w-0 border-white/[0.08] bg-white/[0.03] text-base sm:text-sm"
           required
         />
       </div>
-      <div className="grid gap-2">
-        <Label htmlFor="fb-email">Correo electrónico</Label>
+      <div className="grid min-w-0 gap-2">
+        <Label htmlFor="fb-email" className="min-w-0 break-words leading-snug">
+          Correo electrónico
+        </Label>
         <Input
           id="fb-email"
           type="email"
           value={form.email}
           onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
           placeholder="tu@ejemplo.com"
-          className="bg-white/[0.03] border-white/[0.08]"
+          className="min-w-0 border-white/[0.08] bg-white/[0.03] text-base sm:text-sm"
           required
         />
       </div>
-      <div className="grid gap-2">
-        <Label htmlFor="fb-message">Mensaje</Label>
+      <div className="grid min-w-0 gap-2">
+        <Label htmlFor="fb-message" className="min-w-0 break-words leading-snug">
+          Mensaje
+        </Label>
         <Textarea
           id="fb-message"
           value={form.message}
           onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
           placeholder="Contanos qué pensás, sugerencias, ideas..."
           rows={5}
-          className="bg-white/[0.03] border-white/[0.08] resize-none"
+          className="min-w-0 resize-none border-white/[0.08] bg-white/[0.03] text-base sm:text-sm"
           required
           minLength={10}
         />
       </div>
-      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+      <Button type="submit" disabled={pending} className="h-12 w-full min-w-0 sm:h-10 sm:w-auto">
         {pending ? 'Enviando...' : 'Enviar opinión'}
       </Button>
     </form>
