@@ -6,6 +6,7 @@ import { Pencil } from 'lucide-react'
 
 import { updateProfile } from '@/app/actions/profile'
 import type { MemberProfile } from '@/src/types'
+import { getAvatarDataUri, getBannerDataUri, AVATAR_PALETTE_NAMES } from '@/src/lib/avatar-generator'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -42,6 +43,8 @@ type FormState = {
   bio: string
   github_url: string
   linkedin_url: string
+  avatar_palette_index: string
+  banner_palette_index: string
 }
 
 function toFormState(member: MemberProfile): FormState {
@@ -53,6 +56,8 @@ function toFormState(member: MemberProfile): FormState {
     bio: member.bio ?? '',
     github_url: member.github ?? '',
     linkedin_url: member.linkedin ?? '',
+    avatar_palette_index: member.avatarPaletteIndex != null ? String(member.avatarPaletteIndex) : '',
+    banner_palette_index: member.bannerPaletteIndex != null ? String(member.bannerPaletteIndex) : '',
   }
 }
 
@@ -98,6 +103,59 @@ export function EditProfileDialog({ member }: { member: MemberProfile }) {
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div>
+                <Label>Tema del avatar</Label>
+                <Select value={form.avatar_palette_index || 'auto'} onValueChange={(val) => set('avatar_palette_index')(val === 'auto' ? '' : val)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Automático" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="auto">Automático</SelectItem>
+                    {AVATAR_PALETTE_NAMES.map((name, idx) => (
+                      <SelectItem key={name} value={String(idx)}>
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {member.id && (
+                  <div className="mt-2 flex justify-center">
+                    <img
+                      src={getAvatarDataUri(member.id, 48, form.avatar_palette_index ? Number(form.avatar_palette_index) : undefined)}
+                      alt="Vista previa avatar"
+                      className="h-12 w-12 rounded-full border border-white/10"
+                    />
+                  </div>
+                )}
+              </div>
+              <div>
+                <Label>Tema del banner</Label>
+                <Select value={form.banner_palette_index || 'auto'} onValueChange={(val) => set('banner_palette_index')(val === 'auto' ? '' : val)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Automático" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="auto">Automático</SelectItem>
+                    {AVATAR_PALETTE_NAMES.map((name, idx) => (
+                      <SelectItem key={name} value={String(idx)}>
+                        {name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {member.id && (
+                  <div className="mt-2 h-10 w-full overflow-hidden rounded-lg border border-white/10">
+                    <img
+                      src={getBannerDataUri(member.id, form.banner_palette_index ? Number(form.banner_palette_index) : undefined)}
+                      alt="Vista previa banner"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="ep-name">Nombre completo</Label>
               <Input

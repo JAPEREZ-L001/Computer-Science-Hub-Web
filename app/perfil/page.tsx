@@ -6,6 +6,7 @@ import { es } from 'date-fns/locale'
 
 import { createClient } from '@/src/lib/supabase/server'
 import { fetchProfileByUserId, fetchRelatedMembers } from '@/src/lib/supabase/queries'
+import { getAvatarDataUri, getBannerDataUri } from '@/src/lib/avatar-generator'
 import type { MemberArea } from '@/src/types'
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -87,17 +88,19 @@ export default async function PerfilPage() {
   const profileCompletion = Math.round((completedFields / profileFields.length) * 100)
   const relatedMembers = await fetchRelatedMembers(member.area, member.id, 3)
   const membershipMonths = Math.max(differenceInMonths(new Date(), new Date(member.joinedAt)), 0)
+  const avatarDataUri = getAvatarDataUri(user.id, 96, member.avatarPaletteIndex)
+  const bannerDataUri = getBannerDataUri(user.id, member.bannerPaletteIndex)
 
   // Fetch User Events
   const { data: eventRegs } = await supabase
     .from('event_registrations')
-    .select('event_id, events (id, title, date, time)')
+    .select('event_id, events (id, title, event_date, event_time)')
     .eq('user_id', user.id)
     .order('registered_at', { ascending: false })
     .limit(5)
   
   const myEvents = (eventRegs || [])
-    .map((reg) => reg.events as any)
+    .map((reg) => reg.events as { id: string; title: string; event_date: string; event_time: string } | null)
     .filter(Boolean)
 
   // Fetch Tutoring Requests
@@ -134,11 +137,20 @@ export default async function PerfilPage() {
         </div>
 
         <div className="rounded-3xl border border-white/[0.08] bg-white/[0.01] overflow-hidden">
-          <div className="h-40 w-full bg-gradient-to-tr from-white/[0.08] to-transparent relative">
-            <div className="absolute -bottom-12 left-8 rounded-full border-[8px] border-[#0D0D0D] bg-[#0D0D0D] transition-transform duration-500 hover:scale-105">
-              <Avatar className="h-24 w-24 border border-white/[0.08] bg-white/[0.02] sm:h-28 sm:w-28">
-                <AvatarFallback className="text-2xl sm:text-3xl font-bold text-white/80 bg-transparent">{getInitials(member.name)}</AvatarFallback>
-              </Avatar>
+          <div className="h-40 w-full relative overflow-hidden">
+            <img
+              src={bannerDataUri}
+              alt="Banner de perfil"
+              className="w-full h-full object-cover"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D]/60 to-transparent" />
+            <div className="absolute -bottom-12 left-8 rounded-full border-[8px] border-[#0D0D0D] transition-transform duration-500 hover:scale-105">
+              <img
+                src={avatarDataUri}
+                alt={`Avatar de ${member.name}`}
+                className="h-24 w-24 sm:h-28 sm:w-28 rounded-full"
+              />
             </div>
             <div className="absolute top-6 right-6 flex items-center gap-3">
                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] ${member.status === 'activo' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.15)]' : 'bg-white/5 text-white/40 border border-white/10'}`}>
@@ -235,11 +247,8 @@ export default async function PerfilPage() {
                 <h2 className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400/80">
                   Reputación
                 </h2>
-                <div className="my-2 text-4xl font-bold flex items-baseline justify-center gap-1 text-white">
-                  {member.reputationScore}<span className="text-xl text-white/30">pts</span>
-                </div>
-                <p className="mt-2 text-[9px] uppercase tracking-widest text-white/40 font-semibold">
-                  {member.reputationScore >= 50 ? 'Experto' : member.reputationScore >= 20 ? 'Intermedio' : 'Inicial'}
+                <p className="my-4 text-sm font-semibold uppercase tracking-widest text-white/40">
+                  Próximamente
                 </p>
               </div>
 
@@ -263,11 +272,13 @@ export default async function PerfilPage() {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    {myEvents.map((ev: any) => (
+                    {myEvents.map((ev) => (
                       <div key={ev.id} className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
                         <div>
                           <p className="text-sm font-bold text-white mb-1">{ev.title}</p>
-                          <p className="text-xs text-white/40">{ev.date} - {ev.time}</p>
+                          <p className="text-xs text-white/40">
+                            {format(new Date(ev.event_date), "d 'de' MMM", { locale: es })} · {ev.event_time}
+                          </p>
                         </div>
                         <span className="text-[9px] uppercase tracking-widest font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full">Suscrito</span>
                       </div>

@@ -22,6 +22,8 @@ export interface MemberProfile {
   joinedAt: string
   onboardingCompleted: boolean
   reputationScore: number
+  avatarPaletteIndex?: number | null
+  bannerPaletteIndex?: number | null
 }
 
 export type NewsCategory = 'anuncio' | 'logro' | 'evento' | 'update'
@@ -49,6 +51,7 @@ export interface HubEvent {
   type: HubEventType
   location: string
   registrationUrl?: string
+  createdBy?: string | null
 }
 
 export type SponsorTier = 'principal' | 'colaborador' | 'aliado'

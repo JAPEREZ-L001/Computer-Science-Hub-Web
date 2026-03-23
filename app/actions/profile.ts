@@ -23,6 +23,8 @@ export async function updateProfile(form: {
   bio: string
   github_url: string
   linkedin_url: string
+  avatar_palette_index?: string
+  banner_palette_index?: string
 }) {
   const supabase = await createClient()
   const {
@@ -44,6 +46,18 @@ export async function updateProfile(form: {
     if (!Number.isNaN(n) && n >= 1 && n <= 10) cycle = n
   }
 
+  let avatarPaletteIndex: number | null = null
+  if (form.avatar_palette_index != null && form.avatar_palette_index !== '') {
+    const n = Number.parseInt(form.avatar_palette_index, 10)
+    if (!Number.isNaN(n) && n >= 0 && n <= 9) avatarPaletteIndex = n
+  }
+
+  let bannerPaletteIndex: number | null = null
+  if (form.banner_palette_index != null && form.banner_palette_index !== '') {
+    const n = Number.parseInt(form.banner_palette_index, 10)
+    if (!Number.isNaN(n) && n >= 0 && n <= 9) bannerPaletteIndex = n
+  }
+
   const { error } = await supabase
     .from('profiles')
     .update({
@@ -54,6 +68,8 @@ export async function updateProfile(form: {
       bio: form.bio.trim() || null,
       github_url: sanitizeOptionalUrl(form.github_url),
       linkedin_url: sanitizeOptionalUrl(form.linkedin_url),
+      avatar_palette_index: avatarPaletteIndex,
+      banner_palette_index: bannerPaletteIndex,
     })
     .eq('id', user.id)
 

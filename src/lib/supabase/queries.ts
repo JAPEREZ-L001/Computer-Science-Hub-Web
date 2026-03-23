@@ -60,6 +60,8 @@ export function mapProfileRow(row: {
   created_at?: string | null
   onboarding_completed?: boolean | null
   reputation_score?: number | null
+  avatar_palette_index?: number | null
+  banner_palette_index?: number | null
 }): MemberProfile {
   const areaRaw = row.area ?? 'general'
   const area: MemberArea = isMemberArea(areaRaw) ? areaRaw : 'general'
@@ -86,6 +88,8 @@ export function mapProfileRow(row: {
     joinedAt,
     onboardingCompleted: row.onboarding_completed ?? false,
     reputationScore: row.reputation_score ?? 0,
+    avatarPaletteIndex: row.avatar_palette_index ?? null,
+    bannerPaletteIndex: row.banner_palette_index ?? null,
   }
 }
 
@@ -113,7 +117,7 @@ export async function fetchProfileByUserId(userId: string): Promise<MemberProfil
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
     )
     .eq('id', userId)
     .maybeSingle()
