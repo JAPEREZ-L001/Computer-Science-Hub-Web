@@ -68,7 +68,7 @@ function getMemberBadge(score: number): { label: string; className: string } {
 
 function MemberCard({ member }: { member: MemberProfile }) {
   const badge = getMemberBadge(member.reputationScore)
-  const avatarDataUri = getAvatarDataUri(member.id)
+  const avatarDataUri = getAvatarDataUri(member.id, 96, member.avatarPaletteIndex ?? undefined)
   return (
     <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-white/[0.15] hover:bg-white/[0.03]">
       <div>
@@ -93,7 +93,7 @@ function MemberCard({ member }: { member: MemberProfile }) {
           {member.name}
         </h3>
         
-        <p className="mb-6 text-[10px] font-bold uppercase tracking-widest text-white/30 truncate">
+        <p className="mb-6 text-[10px] font-bold uppercase tracking-widest text-white/30 leading-relaxed break-words">
           {member.career} <span className="mx-1.5 opacity-40">·</span> Ciclo {member.cycle}
         </p>
       </div>

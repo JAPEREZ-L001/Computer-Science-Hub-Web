@@ -98,7 +98,7 @@ export async function fetchActiveProfiles(): Promise<MemberProfile[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
     )
     .eq('status', 'activo')
     .order('full_name', { ascending: true, nullsFirst: false })
@@ -139,7 +139,7 @@ export async function fetchRelatedMembers(
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
     )
     .eq('status', 'activo')
     .eq('area', area)
