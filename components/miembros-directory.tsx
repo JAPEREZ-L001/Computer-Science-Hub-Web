@@ -6,10 +6,10 @@ import { Github, GraduationCap, Linkedin, Users } from 'lucide-react'
 import { ContextualSuggestion } from '@/components/contextual-suggestion'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
+import { getAvatarDataUri } from '@/src/lib/avatar-generator'
 
 import type { MemberArea, MemberProfile } from '@/src/types'
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Empty, EmptyContent, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 function getInitials(name: string) {
@@ -47,20 +47,46 @@ const areaFilters = [
 
 type AreaFilterValue = (typeof areaFilters)[number]['value']
 
+function getMemberBadge(score: number): { label: string; className: string } {
+  if (score >= 200) {
+    return {
+      label: 'Sponsor',
+      className: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+    }
+  }
+  if (score >= 50) {
+    return {
+      label: 'Agent',
+      className: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
+    }
+  }
+  return {
+    label: 'Fellow',
+    className: 'border-blue-500/20 bg-blue-500/5 text-blue-300/70',
+  }
+}
+
 function MemberCard({ member }: { member: MemberProfile }) {
+  const badge = getMemberBadge(member.reputationScore)
+  const avatarDataUri = getAvatarDataUri(member.id)
   return (
     <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-white/[0.15] hover:bg-white/[0.03]">
       <div>
-        <div className="mb-6 flex items-center justify-between">
-          <Avatar className="h-12 w-12 border border-white/[0.08] bg-white/[0.02]">
-            <AvatarFallback className="bg-transparent text-sm font-bold text-white/50">
-              {getInitials(member.name)}
-            </AvatarFallback>
-          </Avatar>
+        <div className="mb-6 flex items-start justify-between gap-2">
+          <img
+            src={avatarDataUri}
+            alt={`Avatar de ${member.name}`}
+            className="h-12 w-12 shrink-0 rounded-full border border-white/[0.08]"
+          />
           
-          <span className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-white/50">
-            {prettyArea(member.area)}
-          </span>
+          <div className="flex flex-wrap justify-end gap-1.5">
+            <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest ${badge.className}`}>
+              {badge.label}
+            </span>
+            <span className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.02] px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white/50">
+              {prettyArea(member.area)}
+            </span>
+          </div>
         </div>
 
         <h3 className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-white/90 line-clamp-1">
