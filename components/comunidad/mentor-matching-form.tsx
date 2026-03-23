@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { saveMentorMatchingProfile } from '@/app/comunidad/actions'
+import { saveMentorMatchingProfile, deleteMentorProfile } from '@/app/comunidad/actions'
 import { useToast } from '@/hooks/use-toast'
 
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,17 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 type Initial = {
   role: string
@@ -31,11 +42,20 @@ export function MentorMatchingForm({ initial }: { initial: Initial }) {
   const router = useRouter()
   const { toast } = useToast()
   const [pending, setPending] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [role, setRole] = useState(initial?.role ?? 'student')
   const [topics, setTopics] = useState(initial?.topics ?? '')
   const [availability, setAvailability] = useState(initial?.availability ?? '')
   const [bio_short, setBioShort] = useState(initial?.bio_short ?? '')
   const [active, setActive] = useState(initial?.active ?? true)
+
+  useEffect(() => {
+    setRole(initial?.role ?? 'student')
+    setTopics(initial?.topics ?? '')
+    setAvailability(initial?.availability ?? '')
+    setBioShort(initial?.bio_short ?? '')
+    setActive(initial?.active ?? true)
+  }, [initial])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,6 +73,13 @@ export function MentorMatchingForm({ initial }: { initial: Initial }) {
       return
     }
     toast({ title: 'Perfil guardado' })
+    if (!initial) {
+      setRole('student')
+      setTopics('')
+      setAvailability('')
+      setBioShort('')
+      setActive(true)
+    }
     router.refresh()
   }
 
@@ -117,9 +144,55 @@ export function MentorMatchingForm({ initial }: { initial: Initial }) {
         </Label>
         <Switch id="m-act" checked={active} onCheckedChange={setActive} />
       </div>
-      <Button type="submit" disabled={pending}>
-        Guardar
-      </Button>
+      <div className="flex items-center gap-3 flex-wrap">
+        <Button type="submit" disabled={pending}>
+          {initial ? 'Actualizar perfil' : 'Crear perfil'}
+        </Button>
+
+        {initial && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                type="button"
+                disabled={deleting}
+                className="rounded-full border border-red-500/20 bg-red-500/5 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-red-400 transition-all hover:border-red-500/40 hover:bg-red-500/10 disabled:opacity-50"
+              >
+                Eliminar perfil
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="border-white/10 bg-[#111] text-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>¿Eliminar tu perfil de mentor?</AlertDialogTitle>
+                <AlertDialogDescription className="text-white/50">
+                  Dejarás de aparecer en el directorio de mentores. Podés volver a crearlo en cualquier momento.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="border-white/10 bg-white/5 text-white hover:bg-white/10">
+                  Cancelar
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  disabled={deleting}
+                  className="bg-red-600 text-white hover:bg-red-700"
+                  onClick={async () => {
+                    setDeleting(true)
+                    const res = await deleteMentorProfile()
+                    setDeleting(false)
+                    if (!res.ok) {
+                      toast({ variant: 'destructive', title: 'Error', description: res.message })
+                      return
+                    }
+                    toast({ title: 'Perfil eliminado' })
+                    router.refresh()
+                  }}
+                >
+                  Sí, eliminar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+      </div>
     </form>
   )
 }

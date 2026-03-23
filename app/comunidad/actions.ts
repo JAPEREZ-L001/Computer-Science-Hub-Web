@@ -106,6 +106,48 @@ export async function proposeCommunityIdea(form: { title: string; description: s
   return { ok: true as const }
 }
 
+export async function deleteOwnIdea(ideaId: string) {
+  const ctx = await requireUser()
+  if (!ctx.ok || !ctx.user || !ctx.supabase) return { ok: false as const, message: ctx.message }
+
+  if (!isValidUUID(ideaId)) {
+    return { ok: false as const, message: 'ID de idea inválido.' }
+  }
+
+  // Only the author can delete their own idea
+  const { error } = await ctx.supabase
+    .from('community_ideas')
+    .delete()
+    .eq('id', ideaId)
+    .eq('author_id', ctx.user.id)
+
+  if (error) {
+    console.error('deleteOwnIdea', error)
+    return { ok: false as const, message: 'No se pudo eliminar la idea.' }
+  }
+
+  revalidatePath('/comunidad/ideas')
+  return { ok: true as const }
+}
+
+export async function deleteMentorProfile() {
+  const ctx = await requireUser()
+  if (!ctx.ok || !ctx.user || !ctx.supabase) return { ok: false as const, message: ctx.message }
+
+  const { error } = await ctx.supabase
+    .from('mentor_matching_profiles')
+    .delete()
+    .eq('user_id', ctx.user.id)
+
+  if (error) {
+    console.error('deleteMentorProfile', error)
+    return { ok: false as const, message: GENERIC_DB_ERROR }
+  }
+
+  revalidatePath('/comunidad/mentores')
+  return { ok: true as const }
+}
+
 export async function saveMentorMatchingProfile(form: {
   role: string
   topics: string
