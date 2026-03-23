@@ -103,8 +103,8 @@ export function SitePath() {
           ))}
         </div>
 
-        {/* Mobile step indicator - pills with labels */}
-        <div className="flex md:hidden gap-3 mb-8 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
+        {/* Mobile step indicator - pills with labels (oculto en mobile por solicitud) */}
+        <div className="hidden gap-3 mb-8 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
           {steps.map((step, index) => (
             <button
               key={step.label}

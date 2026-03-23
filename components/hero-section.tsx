@@ -1,11 +1,21 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { scrollToJoin } from "@/lib/utils"
 
+function useIsAndroid() {
+  const [isAndroid, setIsAndroid] = useState(false)
+  useEffect(() => {
+    setIsAndroid(typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent))
+  }, [])
+  return isAndroid
+}
+
 export function HeroSection() {
+  const isAndroid = useIsAndroid()
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-24 pb-20 px-4 sm:px-0 bg-[#050505]">
       <style dangerouslySetInnerHTML={{__html: `
@@ -17,6 +27,25 @@ export function HeroSection() {
           0% { background-position: 0% 50%; opacity: 0.9; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
           50% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.4)); opacity: 1; }
           100% { background-position: -200% 50%; opacity: 0.9; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+        }
+        .hero-gradient-text {
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          background-image: linear-gradient(to right, #d1fae5, #ffffff, #d1fae5);
+          background-size: 200% auto;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          will-change: background-position;
+        }
+        @supports not (background-clip: text) {
+          .hero-gradient-text {
+            -webkit-text-fill-color: #d1fae5;
+            color: #d1fae5;
+            background: none !important;
+            background-image: none !important;
+          }
         }
       `}} />
 
@@ -58,12 +87,49 @@ export function HeroSection() {
           <span className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white pb-1">
             COMPUTER
           </span>
-          <span 
-            className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1 text-transparent bg-clip-text bg-gradient-to-r from-emerald-100 via-white to-emerald-100 bg-[length:200%_auto]"
-            style={{ animation: 'text-shimmer 6s linear infinite' }}
-          >
-            SCIENCE HUB
-          </span>
+          {isAndroid ? (
+            <span className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1 [filter:drop-shadow(0_0_15px_rgba(255,255,255,0.2))]">
+              <svg
+                viewBox="0 0 420 60"
+                className="inline-block h-[1.15em] w-full max-w-[420px]"
+                style={{ minHeight: '1.15em' }}
+                aria-hidden
+              >
+                <defs>
+                  <linearGradient id="hero-shimmer-android" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#d1fae5" />
+                    <stop offset="50%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#d1fae5" />
+                  </linearGradient>
+                </defs>
+                <text
+                  x="50%"
+                  y="45"
+                  textAnchor="middle"
+                  fill="url(#hero-shimmer-android)"
+                  style={{
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: '48px',
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  SCIENCE HUB
+                </text>
+              </svg>
+            </span>
+          ) : (
+            <span 
+              className="hero-gradient-text block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1"
+              style={{ 
+                animation: 'text-shimmer 6s linear infinite',
+                WebkitBackfaceVisibility: 'hidden' as const,
+                backfaceVisibility: 'hidden',
+              }}
+            >
+              SCIENCE HUB
+            </span>
+          )}
         </h1>
 
         <p className="mx-auto mb-14 max-w-xl text-sm sm:text-base font-medium leading-relaxed text-white/50">

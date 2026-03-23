@@ -76,7 +76,7 @@ export function InteractiveFeaturesSection() {
                 <p className="mt-3 text-sm leading-relaxed text-white/50 font-medium line-clamp-3">{description}</p>
               </div>
               <div className="mt-8 border-t border-white/[0.06] pt-5">
-                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/30 truncate">{footnote}</p>
+                <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/30 break-words">{footnote}</p>
               </div>
             </Link>
           ))}
