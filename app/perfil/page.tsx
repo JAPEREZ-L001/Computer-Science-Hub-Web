@@ -100,7 +100,13 @@ export default async function PerfilPage() {
     .limit(5)
   
   const myEvents = (eventRegs || [])
-    .map((reg) => reg.events)
+    .map((reg) => {
+      const event = reg.events as unknown
+      if (event && typeof event === 'object' && !Array.isArray(event)) {
+        return event as { id: string; title: string; event_date: string; event_time: string }
+      }
+      return null
+    })
     .filter((event): event is { id: string; title: string; event_date: string; event_time: string } => event !== null)
 
   // Fetch Tutoring Requests
