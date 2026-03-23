@@ -45,7 +45,7 @@ export function PhilosophySection() {
   const { ref: gridRef, isInView: gridVisible } = useInView({ threshold: 0.1 })
 
   return (
-    <section id="philosophy" className="relative py-32 bg-[#0D0D0D]">
+    <section id="philosophy" className="relative py-20 bg-[#0D0D0D]">
       <div className="absolute inset-0 opacity-[0.03]">
         <div
           className="h-full w-full"

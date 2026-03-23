@@ -54,7 +54,7 @@ export function ValuesSection() {
   const { ref: bottomGridRef, isInView: bottomGridVisible } = useInView({ threshold: 0.1 })
 
   return (
-    <section id="values" className="relative py-32 bg-[#0D0D0D]">
+    <section id="values" className="relative py-20 bg-[#0D0D0D]">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div
           ref={headingRef}

@@ -32,7 +32,10 @@ const careerOptions = [
 
 const registerSchema = z
   .object({
-    fullName: z.string().min(2, 'Ingresa tu nombre completo'),
+    fullName: z
+      .string()
+      .min(2, 'Ingresa tu nombre completo')
+      .regex(/^[a-zA-ZÁ-ÿ\s]+$/, 'El nombre solo puede contener letras y espacios'),
     email: z.string().email('Ingresa un email válido'),
     career: z.enum(careerOptions),
     cycle: z.coerce
@@ -64,6 +67,7 @@ function RegisterForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -124,12 +128,14 @@ function RegisterForm() {
       description:
         'Te enviamos un email de confirmación desde noreply@send.cshdevs.org. Revisá tu bandeja de entrada y confirmá tu cuenta para poder iniciar sesión.',
     })
+    
+    reset()
   }
 
   const inputFormStyleOverrides = "[&_label]:text-[10px] [&_label]:font-bold [&_label]:uppercase [&_label]:tracking-[0.2em] [&_label]:text-white/50 [&_input]:h-12 [&_input]:rounded-2xl [&_input]:border-white/[0.08] [&_input]:bg-black/40 [&_input]:text-sm [&_input]:font-medium [&_input]:text-white [&_input]:placeholder-white/20 [&_input:focus]:border-white/30 [&_input:focus]:bg-white/[0.02] [&_input:focus]:ring-4 [&_input:focus]:ring-white/[0.05] [&_input]:transition-all"
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-xl">
       <div className="mb-10 flex flex-col items-center justify-center gap-4">
         <Image
           src="/logo/logo-delta-dark.svg"
@@ -149,81 +155,87 @@ function RegisterForm() {
 
       <AuthCard title="Crea tu cuenta" description="Sé parte de la nueva red de ingenieros.">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className={inputFormStyleOverrides}>
-            <InputField
-              label="Nombre completo"
-              id="register-fullName"
-              placeholder="Ej. Ana María López"
-              error={errors.fullName?.message}
-              autoComplete="name"
-              {...register('fullName')}
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className={inputFormStyleOverrides}>
+              <InputField
+                label="Nombre completo"
+                id="register-fullName"
+                placeholder="Ej. Ana María López"
+                error={errors.fullName?.message}
+                autoComplete="name"
+                {...register('fullName')}
+              />
+            </div>
+
+            <div className={inputFormStyleOverrides}>
+              <InputField
+                label="Correo institucional"
+                id="register-email"
+                type="email"
+                placeholder="alumno@udb.edu.sv"
+                error={errors.email?.message}
+                autoComplete="email"
+                {...register('email')}
+              />
+            </div>
           </div>
 
-          <div className={inputFormStyleOverrides}>
-            <InputField
-              label="Correo institucional"
-              id="register-email"
-              type="email"
-              placeholder="alumno@udb.edu.sv"
-              error={errors.email?.message}
-              autoComplete="email"
-              {...register('email')}
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-[1.5fr_1fr] gap-4">
+            <div className="grid gap-3">
+              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 ml-1" htmlFor="register-career">
+                Carrera
+              </label>
+              <select
+                id="register-career"
+                className={`h-12 w-full rounded-2xl border bg-black/40 px-4 text-sm font-medium text-white transition-all focus:border-white/30 focus:bg-white/[0.02] focus:outline-none focus:ring-4 focus:ring-white/[0.05] ${
+                  errors.career ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08]'
+                }`}
+                {...register('career')}
+              >
+                {careerOptions.map((c) => (
+                  <option key={c} value={c} className="bg-[#0A0A0A] text-white py-2">
+                    {c}
+                  </option>
+                ))}
+              </select>
+              {errors.career ? (
+                <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mt-1 ml-1" role="alert">
+                  {errors.career.message}
+                </p>
+              ) : null}
+            </div>
+
+            <div className={inputFormStyleOverrides}>
+              <InputField
+                label="Ciclo actual (1-10)"
+                id="register-cycle"
+                type="number"
+                placeholder="Ej. 4"
+                error={errors.cycle?.message}
+                inputMode="numeric"
+                {...register('cycle')}
+              />
+            </div>
           </div>
 
-          <div className="grid gap-3">
-            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 ml-1" htmlFor="register-career">
-              Carrera
-            </label>
-            <select
-              id="register-career"
-              className={`h-12 w-full rounded-2xl border bg-black/40 px-4 text-sm font-medium text-white transition-all focus:border-white/30 focus:bg-white/[0.02] focus:outline-none focus:ring-4 focus:ring-white/[0.05] ${
-                errors.career ? 'border-red-500/50 focus:border-red-500' : 'border-white/[0.08]'
-              }`}
-              {...register('career')}
-            >
-              {careerOptions.map((c) => (
-                <option key={c} value={c} className="bg-[#0A0A0A] text-white py-2">
-                  {c}
-                </option>
-              ))}
-            </select>
-            {errors.career ? (
-              <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mt-1 ml-1" role="alert">
-                {errors.career.message}
-              </p>
-            ) : null}
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className={inputFormStyleOverrides}>
+              <PasswordInput
+                label="Contraseña segura"
+                placeholder="Mínimo 6 caracteres"
+                error={errors.password?.message}
+                inputProps={register('password')}
+              />
+            </div>
 
-          <div className={inputFormStyleOverrides}>
-            <InputField
-              label="Ciclo actual (1-10)"
-              id="register-cycle"
-              type="number"
-              placeholder="Ej. 4"
-              error={errors.cycle?.message}
-              inputMode="numeric"
-              {...register('cycle')}
-            />
-          </div>
-
-          <div className={inputFormStyleOverrides}>
-            <PasswordInput
-              label="Contraseña segura"
-              placeholder="Mínimo 6 caracteres"
-              error={errors.password?.message}
-              inputProps={register('password')}
-            />
-          </div>
-
-          <div className={inputFormStyleOverrides}>
-            <PasswordInput
-              label="Confirmar contraseña"
-              placeholder="Repite tu contraseña secreta"
-              error={errors.confirmPassword?.message}
-              inputProps={register('confirmPassword')}
-            />
+            <div className={inputFormStyleOverrides}>
+              <PasswordInput
+                label="Confirmar contraseña"
+                placeholder="Repite tu contraseña secreta"
+                error={errors.confirmPassword?.message}
+                inputProps={register('confirmPassword')}
+              />
+            </div>
           </div>
 
           <div className="grid gap-2 border-t border-white/[0.06] pt-6 mt-4">
@@ -268,7 +280,10 @@ function RegisterForm() {
 export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden relative">
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-emerald-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-blue-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+      </div>
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-24">
         <Suspense
           fallback={

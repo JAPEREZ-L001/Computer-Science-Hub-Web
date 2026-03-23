@@ -170,7 +170,7 @@ export function Header() {
                   onClick={() => void signOut()}
                   className="rounded-full bg-white px-5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0D0D0D] shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:scale-105 hover:bg-white/90"
                 >
-                  Salir
+                  Cerrar sesión
                 </button>
               </>
             ) : (
@@ -245,7 +245,7 @@ export function Header() {
                       onClick={() => void signOut()}
                       className="rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 transition-colors hover:bg-white/[0.06] hover:text-white"
                     >
-                      Salir
+                      Cerrar sesión
                     </button>
                     {isAdmin ? (
                       <Link

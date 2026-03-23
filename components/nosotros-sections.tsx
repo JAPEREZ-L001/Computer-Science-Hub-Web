@@ -65,26 +65,39 @@ export function QuienesSomos() {
   return (
     <section className="border-t border-white/[0.06] bg-[#050505] py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-16 md:grid-cols-[1fr_1.5fr]">
-          <div ref={leftRef} className={`reveal-left ${leftVisible ? "visible" : ""}`}>
+        <div className="grid gap-16 md:grid-cols-[1fr_2fr]">
+          <div ref={leftRef} className={`reveal-left flex flex-col justify-start ${leftVisible ? "visible" : ""}`}>
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">Quiénes somos</h2>
+            <div className="mt-8 h-1 w-20 bg-emerald-500/50 rounded-full" />
           </div>
-          <div ref={rightRef} className={`space-y-8 text-sm sm:text-base font-medium leading-relaxed text-white/50 reveal-right ${rightVisible ? "visible" : ""}`}>
-            <p>
-              Nacimos como un proyecto creado por y para estudiantes, y estamos
-              construyendo, paso a paso, una mesa formal de ingeniería con
-              identidad propia y proyección nacional. Creemos que{" "}
-              <span className="font-bold text-white/90">la disrupción provoca innovación</span>
-              : cuestionamos prácticas que ya no funcionan, proponemos
-              alternativas nuevas y las llevamos a la práctica con rigor
-              técnico y responsabilidad.
-            </p>
-            <p>
-              Nuestro objetivo es que cada estudiante encuentre aquí un lugar
-              para aprender más, participar más y proyectarse más lejos,
-              combinando formación académica, organización comunitaria y
-              oportunidades profesionales.
-            </p>
+          <div ref={rightRef} className={`grid gap-10 sm:grid-cols-3 reveal-right ${rightVisible ? "visible" : ""}`}>
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                <span className="flex items-center justify-center p-2 rounded-lg bg-white/[0.05] border border-white/10 text-emerald-400">01</span>
+                Fundación
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50 font-medium">
+                Nacimos como un proyecto creado por y para estudiantes. Cuestionamos las prácticas que ya no funcionaban y nos unimos para construir un espacio diferente.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                <span className="flex items-center justify-center p-2 rounded-lg bg-white/[0.05] border border-white/10 text-emerald-400">02</span>
+                Proceso
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50 font-medium">
+                Hoy combinamos formación académica, organización comunitaria y oportunidades. Llevamos las alternativas a la práctica con rigor técnico y responsabilidad.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                <span className="flex items-center justify-center p-2 rounded-lg bg-white/[0.05] border border-white/10 text-emerald-400">03</span>
+                Construcción
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50 font-medium">
+                Construimos paso a paso una mesa formal de ingeniería con identidad propia y proyección nacional. El objetivo es que cada estudiante llegue más lejos.
+              </p>
+            </div>
           </div>
         </div>
       </div>

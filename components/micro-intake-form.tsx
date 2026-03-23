@@ -83,6 +83,8 @@ export function MicroIntakeForm({ variant = "home" }: { variant?: "home" | "prog
     })
     setGoals([])
     setDetail("")
+    setName("")
+    setEmail("")
   }
 
   return (
@@ -118,11 +120,11 @@ export function MicroIntakeForm({ variant = "home" }: { variant?: "home" | "prog
             </div>
             <div className="flex flex-col gap-3">
               <label className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/50 ml-1">
-                Correo institucional
+                Correo personal
               </label>
               <input
                 type="email"
-                placeholder="tucorreo@udb.edu.sv"
+                placeholder="tucorreo@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-12 w-full rounded-2xl border border-white/[0.08] bg-black/40 px-4 text-sm font-medium text-white placeholder:text-white/20 transition-all focus:border-white/30 focus:bg-white/[0.02] focus:outline-none focus:ring-4 focus:ring-white/[0.05]"
