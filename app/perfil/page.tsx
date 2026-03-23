@@ -143,7 +143,7 @@ export default async function PerfilPage() {
         </div>
 
         <div className="rounded-3xl border border-white/[0.08] bg-white/[0.01] overflow-hidden">
-          <div className="h-40 w-full relative overflow-hidden">
+          <div className="h-40 w-full relative">
             <img
               src={bannerDataUri}
               alt="Banner de perfil"
@@ -166,7 +166,7 @@ export default async function PerfilPage() {
             </div>
           </div>
           
-          <div className="px-8 pt-20 pb-10">
+          <div className="px-4 sm:px-8 pt-20 pb-10 min-w-0 overflow-x-hidden">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">{member.name}</h1>
@@ -367,9 +367,9 @@ export default async function PerfilPage() {
               </div>
             </div>
 
-            <div className="mt-6 rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8">
-              <div className="mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-6">
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
+            <div className="mt-6 rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 lg:p-8 min-w-0 overflow-hidden">
+              <div className="mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-6 min-w-0">
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 min-w-0 break-words">
                   Otros miembros en {prettyArea(member.area)}
                 </h2>
                 <Link href="/miembros" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/50 transition-colors hover:text-white">
@@ -382,15 +382,15 @@ export default async function PerfilPage() {
                   <p className="text-sm font-medium text-white/30">Aún no hay más miembros activos registrados en esta área.</p>
                 </div>
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="flex flex-wrap justify-center gap-4 min-w-0 overflow-hidden">
                   {relatedMembers.map((related) => (
-                    <div key={related.id} className="group rounded-2xl border border-white/[0.06] bg-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:border-white/[0.15] hover:bg-white/[0.03]">
-                      <div className="flex items-center gap-4">
-                        <Avatar className="h-12 w-12 border border-white/[0.08] bg-white/[0.02]">
+                    <div key={related.id} className="group rounded-2xl border border-white/[0.06] bg-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:border-white/[0.15] hover:bg-white/[0.03] min-w-0 overflow-hidden w-full sm:min-w-[200px] sm:max-w-[calc(50%-8px)] lg:max-w-[calc(33.333%-11px)]">
+                      <div className="flex items-center gap-4 min-w-0">
+                        <Avatar className="h-12 w-12 shrink-0 border border-white/[0.08] bg-white/[0.02]">
                           <AvatarFallback className="text-xs font-bold text-white/50 bg-transparent">{getInitials(related.name)}</AvatarFallback>
                         </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="truncate text-sm font-bold text-white/90 transition-colors group-hover:text-white">{related.name}</p>
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <p className="truncate sm:whitespace-normal sm:overflow-visible sm:break-words text-sm font-bold text-white/90 transition-colors group-hover:text-white">{related.name}</p>
                           <p className="text-[9px] mt-1 uppercase tracking-widest text-white/30">Ciclo {related.cycle}</p>
                         </div>
                       </div>
