@@ -36,9 +36,9 @@ export function Footer() {
             <a
               href="#"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] text-white/40 transition-all hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 hover:text-white"
-              aria-label="Twitter"
+              aria-label="X (Twitter)"
             >
-              <Twitter className="h-4 w-4" />
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
             <a
               href="#"
@@ -56,22 +56,22 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-8">
             <Link
-              href="#"
+              href="/privacidad"
               className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
             >
               Privacidad
             </Link>
             <Link
-              href="#"
+              href="/terminos"
               className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
             >
               Términos
             </Link>
             <Link
-              href="#"
-              className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
+              href="/feedback"
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400/80 transition-colors hover:text-emerald-400"
             >
-              Contacto
+              Déjanos tu opinión
             </Link>
           </div>
         </div>
