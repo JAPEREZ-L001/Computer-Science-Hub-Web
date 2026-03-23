@@ -1,6 +1,6 @@
 import Link from "next/link"
-import Image from "next/image"
-import { Github, Twitter, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
+import { CshDeltaMark } from "@/components/csh-delta-mark"
 
 export function Footer() {
   return (
@@ -9,12 +9,9 @@ export function Footer() {
         <div className="flex flex-col items-start justify-between gap-12 md:flex-row md:items-center">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
             <Link href="/" className="flex shrink-0 items-center justify-center rounded-2xl bg-white/5 p-3 border border-white/10 transition-colors hover:bg-white/10">
-              <Image
-                src="/logo/logo-delta-dark.svg"
-                alt="CSH Logo"
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain"
+              <CshDeltaMark
+                aria-label="CSH Logo"
+                className="h-8 w-8 shrink-0 object-contain text-white"
               />
             </Link>
             <div>
@@ -54,7 +51,10 @@ export function Footer() {
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
             © {new Date().getFullYear()} Computer Science Hub. All rights reserved.
           </p>
-          <div className="flex items-center gap-8">
+          <nav
+            aria-label="Enlaces legales y de contacto"
+            className="flex w-full min-w-0 flex-wrap items-center gap-x-4 gap-y-3 sm:gap-x-6 md:w-auto md:justify-end md:gap-x-8 md:gap-y-0"
+          >
             <Link
               href="/privacidad"
               className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
@@ -79,7 +79,7 @@ export function Footer() {
             >
               Encuesta betatester
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

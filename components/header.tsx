@@ -7,7 +7,6 @@ import { scrollToJoin } from "@/lib/utils"
 import { Menu, X, ArrowRight, Sparkles, ChevronDown, User } from "lucide-react"
 
 import { useAuthSession } from "@/components/providers/auth-session-provider"
-import { SessionTipBanner } from "@/components/session-tip-banner"
 import { createClient } from "@/src/lib/supabase/client"
 import {
   DropdownMenu,
@@ -22,6 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
+import { CshDeltaMark } from "@/components/csh-delta-mark"
 
 const navGroups = [
   {
@@ -77,26 +77,24 @@ export function Header() {
   }, [pathname])
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 flex flex-col transition-all duration-500 bg-[#0a0a0a]/90 border-b max-md:backdrop-blur-none md:backdrop-blur-2xl ${
-      scrolled || isMenuOpen
-        ? 'border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
-        : 'border-white/[0.04]'
-    }`}>
-      <SessionTipBanner />
-
-      <div className={`mx-auto w-full max-w-7xl px-4 sm:px-6 transition-all duration-500 ${scrolled ? 'py-3.5' : 'py-5'}`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 flex flex-col border-b bg-[#0a0a0a]/90 transition-all duration-500 max-md:backdrop-blur-none md:backdrop-blur-2xl ${
+        scrolled || isMenuOpen
+          ? 'border-white/[0.08] max-md:shadow-none md:shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+          : 'border-white/[0.04]'
+      }`}
+    >
+      <div
+        className={`mx-auto w-full max-w-7xl px-4 sm:px-6 transition-all duration-500 ${
+          scrolled ? 'py-2.5 md:py-3.5' : 'py-3.5 md:py-5'
+        }`}
+      >
         <nav className="relative z-50 flex w-full items-center justify-between transition-all duration-500">
           
-          <Link href="/" className="relative z-10 flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 256 227"
-              aria-label="CSH"
-              className={`shrink-0 object-contain transition-all duration-300 text-white ${scrolled ? 'h-5 w-5' : 'h-6 w-6'}`}
-              style={{ isolation: 'isolate' as const }}
-            >
-              <path d="m248 217-12.62-21.76h-188.7l80.63-140.7 74.82 129.4h26.5l-101.3-175.7-119.9 208.8h240.6z" fill="#ffffff" />
-            </svg>
+          <Link href="/" className="relative z-10 flex shrink-0 items-center gap-2 transition-opacity hover:opacity-80 sm:gap-3">
+            <CshDeltaMark
+              className={`shrink-0 object-contain text-white transition-all duration-300 h-5 w-5 ${!scrolled ? 'md:h-6 md:w-6' : ''}`}
+            />
             <span className={`hidden font-bold uppercase tracking-[0.25em] text-white transition-all duration-300 sm:block ${scrolled ? 'text-[9px]' : 'text-[11px]'}`}>
               Computer Science Hub
             </span>
@@ -192,16 +190,16 @@ export function Header() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 z-10 lg:hidden">
+          <div className="flex items-center gap-1.5 z-10 lg:hidden">
             <Link
               href={isAuthenticated ? "/perfil" : "/login"}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
               aria-label={isAuthenticated ? "Ir a mi perfil" : "Acceder"}
             >
               <User className="h-4 w-4 text-white/70" />
             </Link>
             <button
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
+              className="group flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -215,12 +213,12 @@ export function Header() {
         </nav>
 
         {isMenuOpen && (
-          <div className="absolute left-4 right-4 top-[calc(100%+8px)] z-40 lg:hidden">
-            <div className="animate-in fade-in slide-in-from-top-4 duration-300 rounded-3xl border border-white/[0.08] bg-[#0c0c0c]/95 backdrop-blur-2xl shadow-2xl p-6 overflow-hidden">
-              <Accordion type="single" collapsible defaultValue="El Hub" className="rounded-2xl border border-white/[0.06] bg-white/[0.01]">
+          <div className="absolute left-3 right-3 top-[calc(100%+6px)] z-40 sm:left-4 sm:right-4 lg:hidden">
+            <div className="animate-in fade-in slide-in-from-top-4 duration-300 overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0c0c0c]/95 p-4 shadow-xl backdrop-blur-2xl sm:rounded-3xl sm:border-white/[0.08] sm:p-6 sm:shadow-2xl">
+              <Accordion type="single" collapsible defaultValue="El Hub" className="rounded-xl border border-white/[0.06] bg-white/[0.01] sm:rounded-2xl">
                 {navGroups.map((group) => (
                   <AccordionItem key={group.label} value={group.label} className="border-b border-white/[0.06] last:border-0">
-                    <AccordionTrigger className="px-5 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white/40 hover:no-underline hover:text-white/70 [&[data-state=open]>svg]:rotate-180">
+                    <AccordionTrigger className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:no-underline hover:text-white/70 sm:px-5 sm:py-4 sm:text-xs [&[data-state=open]>svg]:rotate-180">
                       {group.label}
                     </AccordionTrigger>
                     <AccordionContent className="px-3 pb-3 pt-0">
@@ -246,7 +244,7 @@ export function Header() {
                 ))}
               </Accordion>
 
-              <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-6">
+              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/[0.06] pt-4 sm:mt-4 sm:gap-3 sm:pt-6">
                 {isAuthenticated ? (
                   <>
                     <button

@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import Image from 'next/image'
+
+import { CshDeltaMark } from '@/components/csh-delta-mark'
 
 export default function NotFound() {
   return (
@@ -8,13 +9,9 @@ export default function NotFound() {
       <div className="pointer-events-none absolute top-0 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-white/[0.015] blur-[120px]" />
 
       <div className="relative z-10 flex flex-col items-center text-center max-w-lg gap-8">
-        <Image
-          src="/logo/logo-delta-dark.svg"
-          alt="CSH"
-          width={40}
-          height={40}
-          className="h-10 w-10 object-contain opacity-30"
-          priority
+        <CshDeltaMark
+          aria-label="CSH"
+          className="h-10 w-10 shrink-0 object-contain text-white opacity-30"
         />
 
         <div className="space-y-4">

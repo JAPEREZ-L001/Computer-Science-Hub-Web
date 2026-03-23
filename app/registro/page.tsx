@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
@@ -8,6 +7,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
+import { CshDeltaMark } from '@/components/csh-delta-mark'
 import { AuthCard } from '@/components/auth-card'
 import { InputField } from '@/components/input-field'
 import { PasswordInput } from '@/components/password-input'
@@ -135,15 +135,11 @@ function RegisterForm() {
   const inputFormStyleOverrides = "[&_label]:text-[10px] [&_label]:font-bold [&_label]:uppercase [&_label]:tracking-[0.2em] [&_label]:text-white/50 [&_input]:h-12 [&_input]:rounded-2xl [&_input]:border-white/[0.08] [&_input]:bg-black/40 [&_input]:text-sm [&_input]:font-medium [&_input]:text-white [&_input]:placeholder-white/20 [&_input:focus]:border-white/30 [&_input:focus]:bg-white/[0.02] [&_input:focus]:ring-4 [&_input:focus]:ring-white/[0.05] [&_input]:transition-all"
 
   return (
-    <div className="w-full max-w-xl">
-      <div className="mb-10 flex flex-col items-center justify-center gap-4">
-        <Image
-          src="/logo/logo-delta-dark.svg"
-          alt="CSH Logo"
-          width={48}
-          height={48}
-          className="h-12 w-12 object-contain"
-          priority
+    <div className="w-full min-w-0 max-w-xl">
+      <div className="mb-8 flex flex-col items-center justify-center gap-3 sm:mb-10 sm:gap-4">
+        <CshDeltaMark
+          aria-label="CSH Logo"
+          className="h-12 w-12 shrink-0 object-contain text-white"
         />
         <div className="text-center">
           <p className="font-bold tracking-[0.25em] text-[11px] uppercase text-white/90">
@@ -153,10 +149,14 @@ function RegisterForm() {
         </div>
       </div>
 
-      <AuthCard title="Crea tu cuenta" description="Sé parte de la nueva red de ingenieros.">
+      <AuthCard
+        title="Crea tu cuenta"
+        description="Sé parte de la nueva red de ingenieros."
+        innerMaxWidthClassName="max-w-lg"
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className={inputFormStyleOverrides}>
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className={`min-w-0 ${inputFormStyleOverrides}`}>
               <InputField
                 label="Nombre completo"
                 id="register-fullName"
@@ -167,7 +167,7 @@ function RegisterForm() {
               />
             </div>
 
-            <div className={inputFormStyleOverrides}>
+            <div className={`min-w-0 ${inputFormStyleOverrides}`}>
               <InputField
                 label="Correo institucional"
                 id="register-email"
@@ -180,8 +180,8 @@ function RegisterForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-[1.5fr_1fr] gap-4">
-            <div className="grid gap-3">
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+            <div className="grid min-w-0 gap-3">
               <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 ml-1" htmlFor="register-career">
                 Carrera
               </label>
@@ -205,7 +205,7 @@ function RegisterForm() {
               ) : null}
             </div>
 
-            <div className={inputFormStyleOverrides}>
+            <div className={`min-w-0 ${inputFormStyleOverrides}`}>
               <InputField
                 label="Ciclo actual (1-10)"
                 id="register-cycle"
@@ -218,8 +218,8 @@ function RegisterForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className={inputFormStyleOverrides}>
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className={`min-w-0 ${inputFormStyleOverrides}`}>
               <PasswordInput
                 label="Contraseña segura"
                 placeholder="Mínimo 6 caracteres"
@@ -228,7 +228,7 @@ function RegisterForm() {
               />
             </div>
 
-            <div className={inputFormStyleOverrides}>
+            <div className={`min-w-0 ${inputFormStyleOverrides}`}>
               <PasswordInput
                 label="Confirmar contraseña"
                 placeholder="Repite tu contraseña secreta"
@@ -279,12 +279,12 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <main className="min-h-screen bg-[#050505] text-white overflow-x-hidden relative">
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-emerald-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute -bottom-[10%] -right-[10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-blue-500/5 blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+    <main className="relative min-h-[100dvh] overflow-x-hidden bg-[#050505] text-white">
+      <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+        <div className="absolute -top-[10%] -left-[10%] h-[60vw] max-h-[800px] w-[60vw] max-w-[800px] animate-pulse rounded-full bg-emerald-500/5 blur-[120px]" style={{ animationDuration: '8s' }} />
+        <div className="absolute -right-[10%] -bottom-[10%] h-[60vw] max-h-[800px] w-[60vw] max-w-[800px] animate-pulse rounded-full bg-blue-500/5 blur-[120px]" style={{ animationDuration: '10s', animationDelay: '2s' }} />
       </div>
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-24">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] w-full min-w-0 max-w-7xl items-start justify-center px-4 py-12 sm:items-center sm:py-20 md:py-24">
         <Suspense
           fallback={
             <div className="flex w-full max-w-md justify-center py-12">
