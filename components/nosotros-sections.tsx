@@ -32,11 +32,11 @@ const categorias = [
 
 export function NosotrosHero() {
   return (
-    <section className="relative pt-40 pb-20">
+    <section className="relative pt-48 pb-20 sm:pt-56 sm:pb-24">
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 text-mask-reveal">
+          <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 text-mask-reveal overflow-visible">
             Conócenos
           </span>
           <h1 className="mb-8 text-5xl font-bold tracking-tight text-white leading-[1.15] sm:text-6xl md:text-7xl">

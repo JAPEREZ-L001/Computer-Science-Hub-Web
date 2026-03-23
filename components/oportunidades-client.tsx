@@ -63,17 +63,17 @@ export function OportunidadesClient({ opportunities }: { opportunities: Opportun
     <main className="min-h-screen bg-[#0D0D0D] text-white">
       <Header />
       <div className="overflow-x-hidden">
-      <section className="relative pt-40 pb-20">
+      <section className="relative pt-48 pb-20 sm:pt-56 sm:pb-24">
         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <div className="max-w-3xl">
-            <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400/80 text-mask-reveal">
+            <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400/80 text-mask-reveal overflow-visible">
               Crecimiento pre-profesional
             </span>
             <h1 className="mb-8 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="text-mask-reveal inline-block">Proyectate a</span>
+              <span className="text-mask-reveal inline-block overflow-visible">Proyectate a</span>
               <br />
-              <span className="text-mask-reveal-delay inline-block text-white/40">
+              <span className="text-mask-reveal-delay inline-block text-white/40 overflow-visible">
                 la industria
               </span>
             </h1>
