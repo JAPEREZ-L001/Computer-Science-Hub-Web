@@ -1,4 +1,4 @@
-import { Briefcase, Calendar } from "lucide-react"
+import { Briefcase, Calendar, BookOpen } from "lucide-react"
 import { PhilosophySection } from "@/components/philosophy-section"
 import { EcosystemSection } from "@/components/ecosystem-section"
 import { ValuesSection } from "@/components/values-section"
@@ -28,7 +28,7 @@ export default async function NosotrosPage() {
         <ContextualSuggestion
           theme="dark"
           suggestions={[
-            { title: "Ver Oportunidades", description: "Encuentra becas y pasantías preparadas para vos.", href: "/oportunidades", icon: Briefcase, requiresAuth: false },
+            { title: "Recursos y Oportunidades", description: "Contenido exclusivo para miembros. Próximamente.", href: "#", icon: BookOpen, requiresAuth: true },
             { title: "Próximos eventos", description: "Charlas, talleres y hackathons.", href: "/eventos", icon: Calendar, requiresAuth: true },
           ]}
         />

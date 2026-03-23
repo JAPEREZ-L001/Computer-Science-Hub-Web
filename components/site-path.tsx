@@ -36,7 +36,7 @@ const steps = [
     shortLabel: "Unirme",
     title: "Dejar tu interés",
     description: "Completá el formulario corto para que podamos contactarte. No es un compromiso formal.",
-    href: "#join",
+    href: "/nosotros#join",
     cta: "Completar formulario",
   },
 ]
@@ -158,7 +158,6 @@ export function SitePath() {
             <div className="flex flex-col gap-3 shrink-0 pt-2">
               <Link
                 href={steps[activeStep].href}
-                onClick={steps[activeStep].href === "#join" ? scrollToJoin : undefined}
                 className="btn-press group inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0D0D0D] transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
               >
                 {steps[activeStep].cta}

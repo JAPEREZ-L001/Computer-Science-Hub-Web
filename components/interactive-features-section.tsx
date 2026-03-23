@@ -81,16 +81,6 @@ export function InteractiveFeaturesSection() {
             </Link>
           ))}
         </div>
-
-        <div className="mt-16">
-          <Link
-            href="/#join"
-            onClick={(e) => scrollToJoin(e)}
-            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/[0.06] px-8 py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-300 hover:scale-105 hover:border-white/30 hover:bg-white/[0.1] hover:text-white"
-          >
-            Únete y explora
-          </Link>
-        </div>
       </div>
     </section>
   )

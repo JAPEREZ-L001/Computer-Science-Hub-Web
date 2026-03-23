@@ -1,11 +1,8 @@
 import { HeroSection } from "@/components/hero-section"
 import { SitePath } from "@/components/site-path"
-import { SocialProofStrip } from "@/components/social-proof"
 import { SponsorsSection } from "@/components/sponsors-section"
 import { HomeGrowthSections } from "@/components/home-growth-sections"
 import { InteractiveFeaturesSection } from "@/components/interactive-features-section"
-import { CTASection } from "@/components/cta-section"
-import { MicroIntakeForm } from "@/components/micro-intake-form"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
@@ -16,11 +13,9 @@ export default async function Home() {
       <div className="overflow-x-hidden">
         <HeroSection />
         <InteractiveFeaturesSection />
-        <HomeGrowthSections />
         <SitePath />
-        <SocialProofStrip />
+        <HomeGrowthSections />
         <SponsorsSection />
-        <MicroIntakeForm variant="home" />
         <Footer />
       </div>
     </main>
