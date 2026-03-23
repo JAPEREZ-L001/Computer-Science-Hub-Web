@@ -5,6 +5,7 @@ import { fetchTutoringRequestsForUser } from '@/src/lib/supabase/community-queri
 
 import { AuthRequiredBanner } from '@/components/auth-required-banner'
 import { ComunidadShell } from '@/components/comunidad/comunidad-shell'
+import { ComunidadTabsShell } from '@/components/comunidad/comunidad-tabs-shell'
 import { ContextualSuggestion } from '@/components/contextual-suggestion'
 import { TutoringRequestForm } from '@/components/comunidad/tutoring-request-form'
 import { Users } from 'lucide-react'
@@ -21,10 +22,10 @@ export default async function TutoriasPage() {
   return (
     <ComunidadShell
       pathname="/comunidad/tutorias"
-      eyebrow="CSH-34 · Tutorías"
-      title="Pedí tutoría"
-      titleAccent="cuando la necesites"
-      description="Las solicitudes quedan registradas para que mentores o coordinadores puedan hacer match. No es un reemplazo de horas oficiales: es apoyo entre pares."
+      eyebrow="CSH-34 · Tutorías & Mentores"
+      title="Apoyo entre"
+      titleAccent="pares"
+      description="Las solicitudes quedan registradas para que mentores o coordinadores puedan hacer match. Usá las pestañas para navegar entre tutorías y el directorio de mentores."
       beforeFooter={
         <ContextualSuggestion
           theme="dark"
@@ -41,6 +42,7 @@ export default async function TutoriasPage() {
         />
       }
     >
+      <ComunidadTabsShell>
       {authed ? (
         <div className="mb-8 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
           <p className="text-sm font-medium text-emerald-100/90">Ya tenés acceso completo</p>
@@ -99,6 +101,7 @@ export default async function TutoriasPage() {
           )}
         </div>
       </div>
+      </ComunidadTabsShell>
     </ComunidadShell>
   )
 }

@@ -6,6 +6,7 @@ import {
 
 import { AuthRequiredBanner } from '@/components/auth-required-banner'
 import { ComunidadShell } from '@/components/comunidad/comunidad-shell'
+import { ComunidadTabsShell } from '@/components/comunidad/comunidad-tabs-shell'
 import { MentorMatchingForm } from '@/components/comunidad/mentor-matching-form'
 
 export default async function MentoresPage() {
@@ -37,6 +38,7 @@ export default async function MentoresPage() {
       titleAccent="y preferencias"
       description="Quienes ofrecen mentoría aparecen aquí si tienen perfil activo y son miembros visibles en el directorio. Los estudiantes pueden completar su perfil para facilitar el match."
     >
+      <ComunidadTabsShell>
       {authed ? (
         <div className="mb-8 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
           <p className="text-sm font-medium text-emerald-100/90">Ya tenés acceso al directorio</p>
@@ -103,6 +105,7 @@ export default async function MentoresPage() {
           )}
         </div>
       </div>
+      </ComunidadTabsShell>
     </ComunidadShell>
   )
 }
