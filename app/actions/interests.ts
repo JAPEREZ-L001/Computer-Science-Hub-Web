@@ -41,6 +41,17 @@ export async function submitInterest(form: {
 
   const userId = user && !user.is_anonymous ? user.id : null
 
+  if (userId) {
+    const { count } = await supabase
+      .from('member_interests')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+
+    if ((count ?? 0) > 0) {
+      return { ok: false as const, message: 'Ya enviaste tu interés anteriormente. Nos pondremos en contacto pronto.' }
+    }
+  }
+
   const { error } = await supabase.from('member_interests').insert({
     user_id: userId,
     name,
