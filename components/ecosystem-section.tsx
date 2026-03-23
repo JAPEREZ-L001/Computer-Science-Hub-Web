@@ -31,11 +31,12 @@ const stages = [
     title: "Mesa de ingeniería",
     description:
       "Redes nacionales e internacionales, programas sostenibles y capacidad de proyectar talento más allá de la universidad.",
+    upcoming: true,
   },
 ]
 
 function EcosystemRow({ stage, index, parentVisible }: {
-  stage: typeof stages[number]
+  stage: typeof stages[number] & { upcoming?: boolean }
   index: number
   parentVisible: boolean
 }) {
@@ -54,10 +55,17 @@ function EcosystemRow({ stage, index, parentVisible }: {
       </div>
 
       <div className="flex flex-col justify-center h-full">
-        <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
-          Etapa {stage.number}
-        </span>
-        <h3 className="text-2xl font-bold text-white transition-transform duration-500 group-hover:translate-x-2 md:text-3xl">
+        <div className="mb-3 flex items-center gap-3">
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">
+            Etapa {stage.number}
+          </span>
+          {stage.upcoming && (
+            <span className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.04] px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white/40">
+              Próximamente
+            </span>
+          )}
+        </div>
+        <h3 className={`text-2xl font-bold transition-transform duration-500 group-hover:translate-x-2 md:text-3xl ${stage.upcoming ? 'text-white/50' : 'text-white'}`}>
           {stage.title}
         </h3>
       </div>
@@ -76,13 +84,13 @@ export function EcosystemSection() {
   const { ref: listRef, isInView: listVisible } = useInView({ threshold: 0.05 })
 
   return (
-    <section id="ecosystem" className="relative overflow-hidden py-32 bg-[#050505]">
+    <section id="ecosystem" className="relative overflow-hidden py-20 bg-[#050505]">
       <div className="absolute right-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div
           ref={headingRef}
-          className={`mb-24 text-center reveal-scale ${headingVisible ? "visible" : ""}`}
+          className={`mb-16 text-center reveal-scale ${headingVisible ? "visible" : ""}`}
         >
           <span className="mb-6 inline-block text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">
             El camino
