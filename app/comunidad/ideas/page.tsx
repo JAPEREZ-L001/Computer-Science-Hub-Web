@@ -63,7 +63,7 @@ export default async function IdeasPage() {
           </p>
         </div>
       )}
-      <IdeasBoard ideas={ideas} votedIds={votedIds} isAuthenticated={authed} />
+      <IdeasBoard ideas={ideas} votedIds={votedIds} isAuthenticated={authed} currentUserId={user?.id ?? null} />
     </ComunidadShell>
   )
 }

@@ -38,12 +38,19 @@ export type LeaderboardRow = {
   sort_order: number
 }
 
+export type IdeaVoterRow = {
+  user_id: string
+  display_name: string
+}
+
 export type CommunityIdeaRow = {
   id: string
   title: string
   description: string | null
   vote_count: number
   created_at: string
+  author_id: string | null
+  voters?: IdeaVoterRow[]
 }
 
 export type TutoringRequestRow = {
@@ -132,7 +139,7 @@ export async function fetchCommunityIdeas(): Promise<CommunityIdeaRow[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('community_ideas')
-    .select('id, title, description, vote_count, created_at')
+    .select('id, title, description, vote_count, created_at, author_id')
     .eq('status', 'open')
     .order('vote_count', { ascending: false })
     .limit(200)
@@ -141,7 +148,48 @@ export async function fetchCommunityIdeas(): Promise<CommunityIdeaRow[]> {
     console.error('fetchCommunityIdeas', error)
     return []
   }
-  return (data ?? []) as CommunityIdeaRow[]
+
+  const ideas = (data ?? []) as CommunityIdeaRow[]
+
+  // Fetch voters for each idea (top 5 per idea)
+  if (ideas.length === 0) return ideas
+
+  const ideaIds = ideas.map((i) => i.id)
+
+  const { data: votes } = await supabase
+    .from('community_idea_votes')
+    .select('idea_id, user_id')
+    .in('idea_id', ideaIds)
+    .limit(500)
+
+  if (!votes || votes.length === 0) return ideas
+
+  const voterUserIds = [...new Set(votes.map((v) => v.user_id as string))]
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, full_name')
+    .in('id', voterUserIds)
+    .limit(500)
+
+  const nameById = new Map(
+    (profiles ?? []).map((p) => [p.id as string, (p.full_name as string) || 'Miembro'])
+  )
+
+  const votersByIdeaId = new Map<string, IdeaVoterRow[]>()
+  for (const vote of votes) {
+    const ideaId = vote.idea_id as string
+    const userId = vote.user_id as string
+    if (!votersByIdeaId.has(ideaId)) votersByIdeaId.set(ideaId, [])
+    const list = votersByIdeaId.get(ideaId)!
+    if (list.length < 5) {
+      list.push({ user_id: userId, display_name: nameById.get(userId) ?? 'Miembro' })
+    }
+  }
+
+  return ideas.map((idea) => ({
+    ...idea,
+    voters: votersByIdeaId.get(idea.id) ?? [],
+  }))
 }
 
 export async function fetchIdeaVotesForUser(userId: string): Promise<Set<string>> {
