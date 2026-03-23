@@ -14,8 +14,20 @@ function useIsAndroid() {
   return isAndroid
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return isMobile
+}
+
 export function HeroSection() {
   const isAndroid = useIsAndroid()
+  const isMobile = useIsMobile()
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-24 pb-20 px-4 sm:px-0 bg-[#050505]">
       <style dangerouslySetInnerHTML={{__html: `
@@ -87,7 +99,11 @@ export function HeroSection() {
           <span className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white pb-1">
             COMPUTER
           </span>
-          {isAndroid ? (
+          {isMobile ? (
+            <span className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1 text-white">
+              SCIENCE HUB
+            </span>
+          ) : isAndroid ? (
             <span className="block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1 [filter:drop-shadow(0_0_15px_rgba(255,255,255,0.2))]">
               <svg
                 viewBox="0 0 420 60"
@@ -119,9 +135,9 @@ export function HeroSection() {
               </svg>
             </span>
           ) : (
-            <span 
+            <span
               className="hero-gradient-text block text-4xl font-bold tracking-[0.1em] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl pb-1"
-              style={{ 
+              style={{
                 animation: 'text-shimmer 6s linear infinite',
                 WebkitBackfaceVisibility: 'hidden' as const,
                 backfaceVisibility: 'hidden',
