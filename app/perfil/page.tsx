@@ -100,8 +100,8 @@ export default async function PerfilPage() {
     .limit(5)
   
   const myEvents = (eventRegs || [])
-    .map((reg) => reg.events as { id: string; title: string; event_date: string; event_time: string } | null)
-    .filter(Boolean)
+    .map((reg) => reg.events)
+    .filter((event): event is { id: string; title: string; event_date: string; event_time: string } => event !== null)
 
   // Fetch Tutoring Requests
   const { data: requestedTutorships } = await supabase
