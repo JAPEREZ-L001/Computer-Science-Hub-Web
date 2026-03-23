@@ -79,42 +79,42 @@ function LoginForm() {
     router.push(redirectTo)
   }
 
-  const handleForgotPassword = async () => {
-    const email = getValues('email')?.trim()
-    if (!email || !z.string().email().safeParse(email).success) {
-      toast({
-        variant: 'destructive',
-        title: 'Ingresá tu email primero',
-        description: 'Escribí tu email en el campo de arriba y luego hacé clic aquí.',
-      })
-      return
-    }
+  // const handleForgotPassword = async () => {
+  //   const email = getValues('email')?.trim()
+  //   if (!email || !z.string().email().safeParse(email).success) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Ingresá tu email primero',
+  //       description: 'Escribí tu email en el campo de arriba y luego hacé clic aquí.',
+  //     })
+  //     return
+  //   }
 
-    setResetLoading(true)
-    const supabase = createClient()
-    const origin = getPublicSiteUrl()
+  //   setResetLoading(true)
+  //   const supabase = createClient()
+  //   const origin = getPublicSiteUrl()
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${origin}/auth/callback?next=/perfil`,
-    })
+  //   const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  //     redirectTo: `${origin}/auth/callback?next=/perfil`,
+  //   })
 
-    setResetLoading(false)
+  //   setResetLoading(false)
 
-    if (error) {
-      toast({
-        variant: 'destructive',
-        title: 'No se pudo enviar el enlace',
-        description: error.message,
-      })
-      return
-    }
+  //   if (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'No se pudo enviar el enlace',
+  //       description: error.message,
+  //     })
+  //     return
+  //   }
 
-    setResetSent(true)
-    toast({
-      title: '✉️ Revisá tu correo',
-      description: 'Te enviamos un enlace desde noreply@send.cshdevs.org para restablecer tu contraseña.',
-    })
-  }
+  //   setResetSent(true)
+  //   toast({
+  //     title: '✉️ Revisá tu correo',
+  //     description: 'Te enviamos un enlace desde noreply@send.cshdevs.org para restablecer tu contraseña.',
+  //   })
+  // }
 
   return (
     <div className="w-full min-w-0 max-w-md">
@@ -162,14 +162,14 @@ function LoginForm() {
           </button>
 
           <div className="flex flex-col gap-4 text-center mt-8 pt-6 border-t border-white/[0.06]">
-            <button
+            {/* <button
               type="button"
               disabled={resetLoading || resetSent}
               className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/30 hover:text-white/70 transition-colors disabled:opacity-50"
               onClick={handleForgotPassword}
             >
               {resetSent ? '✓ Enlace enviado por correo' : '¿Olvidaste tu contraseña?'}
-            </button>
+            </button> */}
 
             <Link href="/registro" className="text-[10px] font-bold uppercase tracking-[0.1em] text-emerald-400/80 hover:text-emerald-400 transition-colors">
               ¿No tienes cuenta? Regístrate aquí
