@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { scrollToJoin } from "@/lib/utils"
-import Image from "next/image"
-import { Menu, X, ArrowRight, Sparkles, ChevronDown } from "lucide-react"
+import { Menu, X, ArrowRight, Sparkles, ChevronDown, User } from "lucide-react"
 
 import { useAuthSession } from "@/components/providers/auth-session-provider"
 import { SessionTipBanner } from "@/components/session-tip-banner"
@@ -78,7 +77,7 @@ export function Header() {
   }, [pathname])
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 flex flex-col transition-all duration-500 bg-[#0a0a0a]/90 backdrop-blur-2xl border-b ${
+    <header className={`fixed top-0 left-0 right-0 z-50 flex flex-col transition-all duration-500 bg-[#0a0a0a]/90 border-b max-md:backdrop-blur-none md:backdrop-blur-2xl ${
       scrolled || isMenuOpen
         ? 'border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
         : 'border-white/[0.04]'
@@ -89,14 +88,15 @@ export function Header() {
         <nav className="relative z-50 flex w-full items-center justify-between transition-all duration-500">
           
           <Link href="/" className="relative z-10 flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80">
-             <Image
-              src="/logo/logo-delta-dark.svg"
-              alt="CSH"
-              width={28}
-              height={28}
-              className={`object-contain transition-all duration-300 ${scrolled ? 'h-5 w-5' : 'h-6 w-6'}`}
-              priority
-            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 256 227"
+              aria-label="CSH"
+              className={`shrink-0 object-contain transition-all duration-300 text-white ${scrolled ? 'h-5 w-5' : 'h-6 w-6'}`}
+              style={{ isolation: 'isolate' as const }}
+            >
+              <path d="m248 217-12.62-21.76h-188.7l80.63-140.7 74.82 129.4h26.5l-101.3-175.7-119.9 208.8h240.6z" fill="#ffffff" />
+            </svg>
             <span className={`hidden font-bold uppercase tracking-[0.25em] text-white transition-all duration-300 sm:block ${scrolled ? 'text-[9px]' : 'text-[11px]'}`}>
               Computer Science Hub
             </span>
@@ -192,17 +192,26 @@ export function Header() {
             )}
           </div>
 
-          <button
-            className="group relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06] lg:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="h-4 w-4 text-white/80 transition-transform group-hover:rotate-90" />
-            ) : (
-              <Menu className="h-4 w-4 text-white/80" />
-            )}
-          </button>
+          <div className="flex items-center gap-2 z-10 lg:hidden">
+            <Link
+              href={isAuthenticated ? "/perfil" : "/login"}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
+              aria-label={isAuthenticated ? "Ir a mi perfil" : "Acceder"}
+            >
+              <User className="h-4 w-4 text-white/70" />
+            </Link>
+            <button
+              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.02] transition-colors hover:bg-white/[0.06]"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="h-4 w-4 text-white/80 transition-transform group-hover:rotate-90" />
+              ) : (
+                <Menu className="h-4 w-4 text-white/80" />
+              )}
+            </button>
+          </div>
         </nav>
 
         {isMenuOpen && (
