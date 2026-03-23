@@ -73,6 +73,12 @@ export function Footer() {
             >
               Déjanos tu opinión
             </Link>
+            <Link
+              href="/encuesta-betatester"
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-sky-400/80 transition-colors hover:text-sky-400"
+            >
+              Encuesta betatester
+            </Link>
           </div>
         </div>
       </div>
