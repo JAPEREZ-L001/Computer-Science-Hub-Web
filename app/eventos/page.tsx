@@ -6,10 +6,12 @@ import { createClient } from '@/src/lib/supabase/server'
 import { fetchPublishedEvents, fetchUserEventRegistrations } from '@/src/lib/supabase/queries'
 
 import { ContextualSuggestion } from '@/components/contextual-suggestion'
+import { DeleteEventButton } from '@/components/delete-event-button'
 import { EventSubscribeButton } from '@/components/event-subscribe-button'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { Empty, EmptyContent, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { EventFilters } from '@/components/event-filters'
 
 import type { HubEvent, HubEventType } from '@/src/types'
 
@@ -48,7 +50,17 @@ function excerpt(text: string, maxChars: number) {
   return `${text.slice(0, maxChars - 3)}...`
 }
 
-export default async function EventosPage() {
+type SearchParams = { [key: string]: string | string[] | undefined }
+
+export default async function EventosPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams> | SearchParams
+}) {
+  const resolvedSearchParams = await searchParams
+  const typeFilter = typeof resolvedSearchParams?.type === 'string' ? resolvedSearchParams.type : 'all'
+  const monthFilter = typeof resolvedSearchParams?.month === 'string' ? resolvedSearchParams.month : 'all'
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -56,15 +68,30 @@ export default async function EventosPage() {
 
   const isRealUser = Boolean(user && !user.is_anonymous)
 
-  const [events, registeredEventIds] = await Promise.all([
+  const [events, registeredEventIds, profileData] = await Promise.all([
     fetchPublishedEvents(),
     isRealUser ? fetchUserEventRegistrations(user!.id) : Promise.resolve([]),
+    isRealUser ? supabase.from('profiles').select('role').eq('id', user!.id).maybeSingle() : Promise.resolve({ data: null }),
   ])
 
+  const isAdmin = profileData?.data?.role === 'admin'
+
   const now = new Date()
-  const sorted = [...events].sort(
+  let sorted = [...events].sort(
     (a, b) => eventDateTime(a).getTime() - eventDateTime(b).getTime(),
   )
+
+  if (typeFilter !== 'all') {
+    sorted = sorted.filter(e => e.type === typeFilter)
+  }
+  
+  if (monthFilter !== 'all') {
+    sorted = sorted.filter(e => {
+      const eventDate = eventDateTime(e)
+      const eventMonth = eventDate.getMonth() + 1 // 1-12
+      return eventMonth.toString() === monthFilter
+    })
+  }
 
   const past = sorted.filter((e) => eventDateTime(e).getTime() < now.getTime())
   const upcoming = sorted.filter((e) => eventDateTime(e).getTime() >= now.getTime())
@@ -116,12 +143,15 @@ export default async function EventosPage() {
           </div>
         )}
 
+        {/* Filtros */}
+        <EventFilters />
+
         {upcoming.length === 0 ? (
           <div className="mb-20">
             <Empty className="border-white/[0.06] bg-white/[0.01]">
               <EmptyHeader>
-                <EmptyTitle className="text-white">No hay eventos próximos programados</EmptyTitle>
-                <EmptyContent className="text-white/50">El equipo técnico publicará pronto nuevas fechas aquí.</EmptyContent>
+                <EmptyTitle className="text-white">No se encontraron eventos</EmptyTitle>
+                <EmptyContent className="text-white/50">Ajusta los filtros o intenta con otra categoría.</EmptyContent>
               </EmptyHeader>
             </Empty>
           </div>
@@ -167,12 +197,15 @@ export default async function EventosPage() {
                     </p>
                   </div>
 
-                  <div className="w-full lg:w-auto shrink-0 border-t border-white/[0.06] pt-6 lg:border-t-0 lg:pt-0 lg:pl-6 lg:border-l">
+                  <div className="w-full lg:w-auto shrink-0 border-t border-white/[0.06] pt-6 lg:border-t-0 lg:pt-0 lg:pl-6 lg:border-l flex flex-col items-start lg:items-end gap-3">
                     <EventSubscribeButton
                       eventId={e.id}
                       registrationUrl={e.registrationUrl}
                       initialIsRegistered={registeredEventIds.includes(e.id)}
                     />
+                    {(isAdmin || (isRealUser && e.createdBy === user?.id)) && (
+                      <DeleteEventButton eventId={e.id} eventTitle={e.title} />
+                    )}
                   </div>
                 </div>
               ))}
