@@ -1,8 +1,12 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { z } from 'zod'
 
 import { createClient } from '@/src/lib/supabase/server'
+import { checkRateLimit } from '@/src/lib/rate-limiter'
+
+const ANON_SURVEY_RATE_LIMIT = 75 // máximo de encuestas por hora para usuarios anónimos
 
 const newSurveySchema = z.object({
   role: z.enum(['estudiante_computacion', 'profesional_tecnico', 'no_tecnico', 'otro']),
@@ -111,6 +115,20 @@ export async function submitNewUserSurvey(input: NewSurveyInput) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  // Rate limiting para usuarios anónimos
+  const isAnonymous = !user || user.is_anonymous
+  if (isAnonymous) {
+    const headersList = await headers()
+    const ip =
+      headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      headersList.get('x-real-ip') ??
+      'unknown'
+    const rl = checkRateLimit(`survey_new:${ip}`, ANON_SURVEY_RATE_LIMIT)
+    if (!rl.allowed) {
+      return { ok: false as const, message: 'Demasiados envíos. Intentá de nuevo en un momento.' }
+    }
+  }
 
   const payload = {
     user_id: user?.is_anonymous ? null : user?.id ?? null,
