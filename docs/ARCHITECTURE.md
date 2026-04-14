@@ -1,85 +1,159 @@
-# Arquitectura de Computer Science Hub (CSH) – Web
+# Arquitectura — Computer Science Hub (CSH) Web
 
-Este documento detalla la estructura técnica, decisiones de arquitectura y el stack tecnológico utilizado en el proyecto **Computer Science Hub (CSH) – Web**.
+> Última actualización: 2026-03-26  
+> Para el contexto completo de IA → ver `CONTEXT.md` en la raíz del repo.
 
-## 🚀 Resumen del Stack Tecnológico
+---
 
-La aplicación está construida con las tecnologías más modernas del ecosistema React/Next.js para garantizar rendimiento, accesibilidad y mantenibilidad.
+## 🚀 Stack Tecnológico
 
 | Capa | Tecnología |
-|------|------------|
-| **Core Framework** | Next.js 16 (App Router, Turbopack) |
-| **UI Framework** | React 19 |
-| **Lenguaje** | TypeScript 5.7 |
-| **Estilos** | Tailwind CSS 4 + PostCSS |
-| **Componentes Base** | Radix UI (Primitives) + Shadcn UI (Patrón) |
-| **Validación / Forms**| Zod + React Hook Form |
-| **Iconografía** | Lucide React |
-| **Gestión de Temas** | Next Themes (Dark/Light Mode) |
-| **Despliegue** | Vercel |
+|---|---|
+| Framework | Next.js 16 (App Router + Turbopack) |
+| UI | React 19 + TypeScript 5.7 |
+| Estilos | Tailwind CSS 4 + PostCSS |
+| Componentes | Radix UI primitives + shadcn/ui |
+| Formularios | React Hook Form + Zod |
+| Iconos | Lucide React |
+| Tema | Next Themes (dark mode) |
+| Base de datos | Supabase (PostgreSQL + Auth + RLS + Vault) |
+| Email | Resend (dominio: `send.cshdevs.org`) |
+| Despliegue | Vercel |
+| Analytics | @vercel/analytics |
 
 ---
 
 ## 📁 Estructura del Proyecto
 
-El proyecto sigue una estructura modular basada en las convenciones de Next.js App Router, con separaciones claras para lógica, componentes y documentación.
-
 ```
 /
-├── app/                  # Rutas y páginas de la aplicación
-│   ├── (rutas)/          # Carpetas por página (ej: sobre, valores, programas)
-│   ├── layout.tsx        # Layout raíz (Navbar, Footer, Providers)
-│   ├── page.tsx          # Home Page (/)
-│   └── globals.css       # Estilos globales y tokens de Tailwind 4
-├── components/           # Componentes de la interfaz
-│   ├── ui/               # Componentes atómicos/primitivos (Radix)
-│   └── *.tsx             # Componentes de sección y funcionales (Header, Hero, etc.)
-├── docs/                 # Documentación técnica, planes y assets
-├── hooks/                # Hooks personalizados de React
-├── lib/                  # Utilidades compartidas (utils.ts, cn helper)
-├── public/               # Assets estáticos (imágenes, logos, fuentes)
-├── src/                  # Capa de datos y tipos
-│   ├── data/             # Archivos JSON o constantes de contenido
-│   └── types/            # Definiciones de interfaces TypeScript
-├── styles/               # Configuraciones adicionales de estilos
-└── tsconfig.json         # Configuración de TypeScript
+├── app/                    # Rutas Next.js (App Router)
+│   ├── actions/            # Server Actions ('use server')
+│   ├── admin/              # Panel administrativo
+│   ├── auth/               # Callback de autenticación Supabase
+│   ├── comunidad/          # Comunidad: ideas, mentors, documentos, podcast
+│   ├── eventos/            # Listado y detalle de eventos
+│   ├── feedback/           # Formulario de feedback
+│   ├── login/ + registro/  # Autenticación
+│   ├── miembros/           # Directorio de miembros
+│   ├── noticias/           # Blog de noticias
+│   ├── onboarding/         # Flujo de bienvenida (nuevo usuario)
+│   ├── oportunidades/      # Oportunidades laborales/académicas
+│   ├── perfil/             # Perfil del usuario autenticado
+│   ├── recursos/           # Recursos académicos
+│   └── layout.tsx / globals.css
+├── components/
+│   ├── ui/                 # Primitivos atómicos (shadcn/Radix)
+│   ├── admin/              # Componentes del panel admin
+│   ├── comunidad/          # Componentes de la sección comunidad
+│   └── *.tsx               # Componentes de sección (Header, Hero, Footer…)
+├── src/
+│   ├── lib/
+│   │   ├── supabase/       # Clientes y queries
+│   │   │   ├── client.ts         # Cliente browser
+│   │   │   ├── server.ts         # Cliente servidor
+│   │   │   ├── middleware.ts     # updateSession para JWT
+│   │   │   ├── queries.ts        # Queries principales
+│   │   │   ├── community-queries.ts  # Queries de comunidad
+│   │   │   ├── admin-queries.ts  # Queries del panel admin
+│   │   │   └── admin-auth.ts     # Verificación de rol admin
+│   │   ├── resend.ts       # Email transaccional
+│   │   ├── avatar-generator.ts
+│   │   ├── slugify.ts
+│   │   └── site-url.ts
+│   ├── types/index.ts      # Interfaces TypeScript globales
+│   └── data/               # Mocks de datos (desarrollo)
+├── lib/utils.ts            # Helper cn() de shadcn
+├── hooks/                  # Custom hooks de React
+├── middleware.ts            # Refresh de sesión Supabase (todas las rutas)
+├── docs/                   # Documentación del proyecto
+├── scripts/                # Scripts de utilidad (.ps1)
+├── resources/              # Assets y referencias externas
+└── public/                 # Assets estáticos
 ```
 
 ---
 
-## 🏗️ Patrones de Diseño
+## 🗄️ Base de Datos — Supabase
 
-### 1. **Componentes Atómicos y de Dominio**
-- **UI Components (`components/ui`)**: Componentes puros, sin lógica de negocio, basados en Radix UI. Son altamente reutilizables y accesibles.
-- **Section Components (`components/`)**: Componentes de nivel superior que representan secciones de la página (ej: `hero-section.tsx`, `philosophy-section.tsx`). Orquestan componentes UI y contenido.
+### Tablas Principales
 
-### 2. **Gestión de Rutas (App Router)**
-Se utiliza el sistema de archivos de Next.js para definir rutas. Cada subfolder en `/app` representa una ruta pública (ej: `/sobre`, `/programa`). El uso de `layout.tsx` permite envolver las páginas con elementos persistentes como el Header y Footer.
+| Tabla | Descripción | Campos clave |
+|---|---|---|
+| `profiles` | Perfil del miembro | `full_name`, `area`, `career`, `cycle`, `status`, `reputation_score`, `onboarding_completed` |
+| `events` | Eventos del hub | `title`, `type`, `event_date`, `published`, `created_by` |
+| `event_registrations` | Inscripciones | `user_id`, `event_id` |
+| `news` | Noticias | `slug`, `title`, `category`, `published` |
+| `resources` | Recursos académicos | `title`, `url`, `category`, `tags`, `published` |
+| `opportunities` | Oportunidades | `title`, `organization`, `type`, `published` |
+| `sponsors` | Patrocinadores | `name`, `tier` (principal/colaborador/aliado), `active` |
+| `community_ideas` | Ideas comunitarias | `title`, `vote_count`, `status`, `author_id` |
+| `community_idea_votes` | Votos de ideas | `user_id`, `idea_id` |
+| `hub_documents` | Documentos oficiales | `title`, `url`, `category`, `published`, `sort_order` |
+| `podcast_episodes` | Podcast | `title`, `episode_url`, `platform`, `published` |
+| `research_publications` | Investigación | `title`, `authors`, `venue`, `year` |
+| `community_leaderboard` | Ranking | `display_name`, `points`, `badge`, `area` |
+| `tutoring_requests` | Tutorías solicitadas | `user_id`, `topic`, `status` |
+| `mentor_matching_profiles` | Mentores/mentees | `user_id`, `role` (mentor/mentee/both), `active` |
 
-### 3. **Validación de Datos (Schema-First)**
-Se utiliza **Zod** para definir esquemas de datos tanto para formularios como para props de componentes. Esto garantiza que los datos en la aplicación sean consistentes y reduce errores en tiempo de ejecución.
+### Tipos principales (`src/types/index.ts`)
 
-### 4. **Estilizado (Utility-First)**
-Con **Tailwind CSS 4**, los estilos se gestionan directamente en el HTML/TSX. Se utilizan variables CSS en `globals.css` para el sistema de diseño (colores primarios, espaciado, radios), lo que permite una edición centralizada del branding.
-
----
-
-## 🔄 Flujo de Desarrollo
-
-1. **Diseño y Documentación**: Los planes de acción se encuentran en `docs/work/` y la identidad en `docs/ReferenciasViejas/`.
-2. **Componentes UI**: Se añaden/modifican primitivos en `components/ui`.
-3. **Ensamblado**: Se crean secciones en `components/` y se inyectan en las rutas de `app/`.
-4. **Validación**: Uso de `npm run lint` y `npm run build` (Turbopack) para asegurar la integridad del código.
-
----
-
-## ☁️ Despliegue e Infraestructura
-
-- **Hosting**: El sitio está optimizado para ser desplegado en **Vercel**, aprovechando el Edge Runtime y la optimización de imágenes nativa de Next.js.
-- **Analytics**: Integración con `@vercel/analytics` para monitorear el rendimiento y uso.
-- **Integración Continua**: Se recomienda el uso de Git hooks para linting y chequeo de tipos antes de cada push.
+- `MemberArea`: `frontend | backend | diseño | devops | ia | seguridad | general`
+- `MemberStatus`: `activo | inactivo`
+- `HubEventType`: `workshop | charla | hackathon | copa | networking | otro`
+- `NewsCategory`: `anuncio | logro | evento | update`
+- `SponsorTier`: `principal | colaborador | aliado`
 
 ---
 
-> [!NOTE]
-> Este documento es dinámico y debe actualizarse a medida que el sistema evoluciona (ej: integración de bases de datos, APIs externas o nuevos servicios).
+## 🔐 Autenticación
+
+```
+Browser → middleware.ts → updateSession() → Supabase JWT refresh
+                 ↓
+        Server Component verifica sesión
+                 ↓
+        Si no autenticado: redirect /login
+        Si onboarding_completed = false: redirect /onboarding
+```
+
+- Supabase Auth (email + password)
+- Middleware aplica a todas las rutas excepto assets estáticos
+- El cliente browser (`client.ts`) se usa en componentes `'use client'`
+- El cliente servidor (`server.ts`) se usa en RSC y Server Actions
+
+---
+
+## ✉️ Email — Resend
+
+- **From:** `noreply@send.cshdevs.org`
+- **Admin:** `admin@cshdevs.org`
+- **Triggers:** inscripción a evento, envío de feedback
+- **Variable:** `RESEND_API_KEY` (guardada en Supabase Vault + Vercel env)
+
+---
+
+## 🏗️ Patrones de Arquitectura
+
+### 1. Server Actions para mutaciones
+Toda mutación va en `app/actions/*.ts` con `'use server'`. No se usan API Routes para lógica de negocio.
+
+### 2. RSC para fetch de datos
+Los Server Components fetchean datos directamente con `await` usando las funciones de `src/lib/supabase/queries.ts`.
+
+### 3. Separación cliente/servidor
+`src/lib/supabase/client.ts` → solo en `'use client'`  
+`src/lib/supabase/server.ts` → solo en Server Components y Actions
+
+### 4. Alias `@/`
+Todo import usa `@/` que mapea a la raíz del proyecto (configurado en `tsconfig.json`).
+
+---
+
+## ☁️ Infraestructura
+
+- **Hosting:** Vercel (Edge + Image Optimization)
+- **DB + Auth:** Supabase
+- **Email:** Resend (dominio verificado `send.cshdevs.org`)
+- **Dominio:** `cshdevs.org` (configurado en Vercel)
+- **CI:** lint + build manual antes de deploy (`npm run predeploy`)

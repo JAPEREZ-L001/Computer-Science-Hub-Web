@@ -1,1 +1,0 @@
-Tengo informacion muy dispersa necesito que ordenes la infroamcion en un solo .md y que le des coherencia 

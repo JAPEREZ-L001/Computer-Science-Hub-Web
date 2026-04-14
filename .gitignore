@@ -25,6 +25,7 @@ supabase/.temp/
 tmp-*.txt
 tmp_*.txt
 *.log
+tsconfig.tsbuildinfo
 
 # Operational scripts (not application code)
 *.ps1
