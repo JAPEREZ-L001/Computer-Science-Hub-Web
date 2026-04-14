@@ -2,6 +2,10 @@
 
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/src/lib/supabase/server"
+import type { UniversityCode, UniversityRole } from "@/src/types"
+
+const VALID_UNIVERSITY_ROLES: UniversityRole[] = ['estudiante', 'catedratico']
+const VALID_UNIVERSITIES: UniversityCode[] = ['UDB', 'UCA', 'UES', 'UFG', 'UEES', 'ESEN']
 
 export async function completeOnboardingAction(formData: FormData) {
   const supabase = await createClient()
@@ -14,11 +18,24 @@ export async function completeOnboardingAction(formData: FormData) {
     return { error: "No autorizado" }
   }
 
-  const bio = formData.get("bio") as string
-  const github = formData.get("github") as string
-  const linkedin = formData.get("linkedin") as string
+  const bio            = (formData.get("bio")      as string)?.trim() || null
+  const github         = (formData.get("github")   as string)?.trim() || null
+  const linkedin       = (formData.get("linkedin") as string)?.trim() || null
+  const universityRole = formData.get("universityRole") as UniversityRole | null
+  const university     = formData.get("university")     as UniversityCode | null
 
-  // 1. Fetch current profile
+  // Validar campos controlados
+  const safeUniversityRole: UniversityRole =
+    universityRole && VALID_UNIVERSITY_ROLES.includes(universityRole)
+      ? universityRole
+      : 'estudiante'
+
+  const safeUniversity: UniversityCode =
+    university && VALID_UNIVERSITIES.includes(university)
+      ? university
+      : 'UDB'
+
+  // 1. Fetch del perfil actual
   const { data: profile, error: profileErr } = await supabase
     .from("profiles")
     .select("onboarding_completed, reputation_score")
@@ -29,20 +46,22 @@ export async function completeOnboardingAction(formData: FormData) {
     return { error: "Perfil no encontrado" }
   }
 
-  // 2. Prevent double-awarding points
+  // 2. Evitar doble award de puntos
   if (profile.onboarding_completed) {
     return { error: "El onboarding ya fue completado previamente." }
   }
 
-  // 3. Update profile
+  // 3. Actualizar perfil
   const reputation = (profile.reputation_score || 0) + 5
 
   const { error: updateErr } = await supabase
     .from("profiles")
     .update({
-      bio: bio || null,
-      github_url: github || null,
-      linkedin_url: linkedin || null,
+      bio,
+      github_url:       github,
+      linkedin_url:     linkedin,
+      university_role:  safeUniversityRole,
+      university:       safeUniversity,
       onboarding_completed: true,
       reputation_score: reputation,
     })

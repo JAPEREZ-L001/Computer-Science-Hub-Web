@@ -9,6 +9,9 @@ import type {
   NewsPost,
   Sponsor,
   SponsorTier,
+  UserBadge,
+  UniversityRole,
+  UniversityCode,
 } from '@/src/types'
 
 function isMemberArea(v: string): v is MemberArea {
@@ -46,6 +49,21 @@ function isSponsorTier(v: string): v is SponsorTier {
   return v === 'principal' || v === 'colaborador' || v === 'aliado'
 }
 
+const VALID_BADGES: readonly string[] = [
+  'ceo_founder', 'primary_agent', 'primary_fellow',
+  'agent', 'member', 'fellow', 'catedratico', 'estudiante',
+]
+function isUserBadge(v: string): v is UserBadge {
+  return VALID_BADGES.includes(v)
+}
+function isUniversityRole(v: string): v is UniversityRole {
+  return v === 'estudiante' || v === 'catedratico'
+}
+const VALID_UNIVERSITIES: readonly string[] = ['UDB', 'UCA', 'UES', 'UFG', 'UEES', 'ESEN']
+function isUniversityCode(v: string): v is UniversityCode {
+  return VALID_UNIVERSITIES.includes(v)
+}
+
 export function mapProfileRow(row: {
   id: string
   full_name: string | null
@@ -62,6 +80,9 @@ export function mapProfileRow(row: {
   reputation_score?: number | null
   avatar_palette_index?: number | null
   banner_palette_index?: number | null
+  badge?: string | null
+  university_role?: string | null
+  university?: string | null
 }): MemberProfile {
   const areaRaw = row.area ?? 'general'
   const area: MemberArea = isMemberArea(areaRaw) ? areaRaw : 'general'
@@ -74,6 +95,12 @@ export function mapProfileRow(row: {
   const joinedAt = row.created_at
     ? row.created_at.slice(0, 10)
     : new Date().toISOString().slice(0, 10)
+  const badgeRaw = row.badge ?? 'member'
+  const badge: UserBadge = isUserBadge(badgeRaw) ? badgeRaw : 'member'
+  const universityRoleRaw = row.university_role ?? 'estudiante'
+  const universityRole: UniversityRole = isUniversityRole(universityRoleRaw) ? universityRoleRaw : 'estudiante'
+  const universityRaw = row.university ?? 'UDB'
+  const university: UniversityCode = isUniversityCode(universityRaw) ? universityRaw : 'UDB'
 
   return {
     id: row.id,
@@ -90,6 +117,9 @@ export function mapProfileRow(row: {
     reputationScore: row.reputation_score ?? 0,
     avatarPaletteIndex: row.avatar_palette_index ?? null,
     bannerPaletteIndex: row.banner_palette_index ?? null,
+    badge,
+    universityRole,
+    university,
   }
 }
 
@@ -98,7 +128,7 @@ export async function fetchActiveProfiles(): Promise<MemberProfile[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index, badge, university_role, university',
     )
     .eq('status', 'activo')
     .order('full_name', { ascending: true, nullsFirst: false })
@@ -117,7 +147,7 @@ export async function fetchProfileByUserId(userId: string): Promise<MemberProfil
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index, badge, university_role, university',
     )
     .eq('id', userId)
     .maybeSingle()
@@ -139,7 +169,7 @@ export async function fetchRelatedMembers(
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index',
+      'id, full_name, email, career, cycle, area, status, bio, github_url, linkedin_url, created_at, onboarding_completed, reputation_score, avatar_palette_index, banner_palette_index, badge, university_role, university',
     )
     .eq('status', 'activo')
     .eq('area', area)

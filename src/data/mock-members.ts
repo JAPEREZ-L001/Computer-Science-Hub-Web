@@ -14,6 +14,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-02-10',
     onboardingCompleted: true,
     reputationScore: 50,
+    badge: 'agent',
+    universityRole: 'estudiante',
+    university: 'UDB',
   },
   {
     id: 'm-udb-0002',
@@ -26,6 +29,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-01-22',
     onboardingCompleted: true,
     reputationScore: 20,
+    badge: 'member',
+    universityRole: 'estudiante',
+    university: 'UDB',
   },
   {
     id: 'm-udb-0003',
@@ -39,6 +45,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-02-28',
     onboardingCompleted: true,
     reputationScore: 10,
+    badge: 'member',
+    universityRole: 'estudiante',
+    university: 'UCA',
   },
   {
     id: 'm-udb-0004',
@@ -52,6 +61,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-01-30',
     onboardingCompleted: true,
     reputationScore: 35,
+    badge: 'agent',
+    universityRole: 'estudiante',
+    university: 'UDB',
   },
   {
     id: 'm-udb-0005',
@@ -65,6 +77,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-03-01',
     onboardingCompleted: true,
     reputationScore: 5,
+    badge: 'member',
+    universityRole: 'estudiante',
+    university: 'UFG',
   },
   {
     id: 'm-udb-0006',
@@ -78,6 +93,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-02-05',
     onboardingCompleted: true,
     reputationScore: 15,
+    badge: 'member',
+    universityRole: 'catedratico',
+    university: 'UDB',
   },
   {
     id: 'm-udb-0007',
@@ -89,6 +107,9 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2026-03-08',
     onboardingCompleted: false,
     reputationScore: 0,
+    badge: 'estudiante',
+    universityRole: 'estudiante',
+    university: 'UEES',
   },
   {
     id: 'm-udb-0008',
@@ -102,6 +123,8 @@ export const mockMembers: MemberProfile[] = [
     joinedAt: '2025-12-18',
     onboardingCompleted: true,
     reputationScore: 60,
+    badge: 'fellow',
+    universityRole: 'estudiante',
+    university: 'UDB',
   },
 ]
-
